@@ -8,12 +8,21 @@ class User(AbstractUser):
 
 class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    sender = models.ForeignKey("User", on_delete=models.PROTECT)
     body = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    likes = models.PositiveIntegerField()
+    likes = models.TextField(blank=True)
 
 
+def serialize():
+    return{
+        "id":self.id,
+        "poster":self.user,
+        "body":self.body,
+        "timestamp":self.timestamp,
+        "likes":self.likes 
+    }
+
+    
 
 
 
