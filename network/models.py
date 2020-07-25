@@ -3,10 +3,10 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    followers = models.ManyToManyField("User", related_name="user_followers")
 
 
-class Post(models.Model):
+class Tweet(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     body = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

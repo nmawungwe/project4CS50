@@ -11,6 +11,7 @@ urlpatterns = [
 
 
     #API routes
-    path("posts", views.compose, name="compose"),
-    path("posts/<int:post_id>", views.post, name="post"),
+    path("tweets", views.compose, name="compose"),
+    path("tweets/<str:tweetbox>", views.tweetbox, name="tweetbox"),
+    path("tweets/<int:tweet_id>", views.tweet, name="tweet"),
 ]

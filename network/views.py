@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User, Post
+from .models import User, Tweet
 
 
 def index(request):
@@ -81,27 +81,44 @@ def compose(request):
     body = data.get("body", "")
     likes = data.get("likes", "")
 
-    # Create one email for each recipient, plus sender
+    # Create tweet
     users = set()
     users.add(request.user)
     for user in users:
-        post = Post(
+        tweet = Tweet(
             user=user,
             body=body,
             likes=likes
         )
-        post.save()
-    return JsonResponse({"message": "Post made successfully."}, status=201)
+        tweet.save()
+    return JsonResponse({"message": "Tweet made successfully."}, status=201)
 
 
-def post(request, post_id):
+
+
+
+@csrf_exempt
+@login_required
+def tweet(request, tweet_id):
     
     # Query for requested post
     try:
-        post = Post.objects.get(user=request.user, pk=post_id)
-    except Post.DoesNotExist:
-        return JsonResponse({"error": "Post not found."}, status=404)
+        tweet = Tweet.objects.get(user=request.user, pk=tweet_id)
+    except Tweet.DoesNotExist:
+        return JsonResponse({"error": "Tweet not found."}, status=404)
 
     # Return post contents
     if request.method == "GET":
-        return JsonResponse(post.serialize())
+        return JsonResponse(tweet.serialize())
+
+
+@login_required
+def tweetbox(request, tweetbox):
+
+    # Filter tweets returned based on tweetbox
+    if tweetbox == "all":
+        tweets = Tweet.objects.all()
+
+        tweets = tweets.order_by("-timestamp").all()
+        return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
+

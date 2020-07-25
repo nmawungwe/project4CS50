@@ -1,16 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 document.querySelector('#btn').addEventListener('click',()=>{
-    fetch(`/posts/2`).then(response => response.json()).then(post => {
+    fetch(`/tweets/2`).then(response => response.json()).then(tweet => {
         // Print email
-        console.log(post)
-        console.log('eita')
+        console.log(tweet)
     })
 })
 
 document.querySelector('#post').addEventListener('click',()=>{
 
-    fetch('/posts', {
+    fetch('/tweets', {
         method: 'POST',
         body: JSON.stringify({
             body: 'Wadii',
@@ -21,6 +20,13 @@ document.querySelector('#post').addEventListener('click',()=>{
           console.log(result);
       })
 
+})
+
+document.querySelector('#all').addEventListener('click',()=>{
+    fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+        // Print email
+        console.log(tweets)
+    })
 })
 
 
