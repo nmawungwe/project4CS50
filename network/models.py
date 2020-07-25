@@ -13,14 +13,14 @@ class Post(models.Model):
     likes = models.TextField(blank=True)
 
 
-def serialize():
-    return{
-        "id":self.id,
-        "poster":self.user,
-        "body":self.body,
-        "timestamp":self.timestamp,
-        "likes":self.likes 
-    }
+    def serialize(self):
+        return{
+            "id":self.id,
+            "poster":self.user.username,
+            "body":self.body,
+            "timestamp":self.timestamp,
+            "likes":self.likes 
+        }
 
     
 

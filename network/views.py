@@ -102,6 +102,6 @@ def post(request, post_id):
     except Post.DoesNotExist:
         return JsonResponse({"error": "Post not found."}, status=404)
 
-    # Return email contents
+    # Return post contents
     if request.method == "GET":
         return JsonResponse(post.serialize())
