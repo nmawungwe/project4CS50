@@ -3,7 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    followers = models.ManyToManyField("User", related_name="user_followers")
+    followers = models.ManyToManyField("User", related_name="followers")
+    following = models.ManyToManyField("User", related_name="following")
 
 
 class Tweet(models.Model):
