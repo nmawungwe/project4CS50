@@ -12,6 +12,7 @@ from .models import User, Tweet
 
 
 def index(request):
+
     return render(request, "network/index.html")
 
 
@@ -114,13 +115,39 @@ def tweet(request, tweet_id):
 
 @login_required
 def tweetbox(request, tweetbox):
-
     # Filter tweets returned based on tweetbox
     if tweetbox == "all":
         tweets = Tweet.objects.all()
+    elif tweetbox == "following":
+        tweets = Tweet.objects.all()
+        # find a way of filtering the tweets that are coming from the database maybe a boolean like archived of replied like in email json
+    else:
+        return JsonResponse({"error": "Invalid tweetbox."}, status=400)
 
-        tweets = tweets.order_by("-timestamp").all()
-        return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
+    # Return emails in reverse chronologial order
+    tweets = tweets.order_by("-timestamp").all()
+    return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
+
+@login_required
+def user_profile(request, user_id):
+
+     # Query for requested user
+    try:
+        user_prof = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found."}, status=404)
+
+    # Return post contents
+    if request.method == "GET":
+        return JsonResponse(user_prof.serialize())
+
+
+
+    
+
+
+
+    
 
         
 

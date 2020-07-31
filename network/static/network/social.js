@@ -30,4 +30,20 @@ document.querySelector('#all').addEventListener('click',()=>{
 })
 
 
+document.querySelector('#following').addEventListener('click',()=>{
+    fetch(`/tweets/following`).then(response => response.json()).then(tweets => {
+        // Print email
+        console.log(tweets)
+    })
+})
+
+document.querySelector('#user_profile').addEventListener('click',()=>{
+    fetch(`/user_profile/3`).then(response => response.json()).then(user_prof => {
+        // Print email
+        console.log(user_prof)
+    })
+})
+
+
+
 })
