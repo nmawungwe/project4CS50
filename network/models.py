@@ -3,9 +3,33 @@ from django.db import models
 
 
 class User(AbstractUser):
-    followers = models.ManyToManyField("User", related_name="followers")
-    following = models.ManyToManyField("User", related_name="following")
+    def serialize(self):
+        return{
+            "following": self.following,
+            "followers": self.followers
+        }
 
+# The intermediary Model
+class UserFollowing(models.Model):
+    user_id = models.ForeignKey("User", related_name="following", on_delete=models.CASCADE)
+
+    following_user_id = models.ForeignKey("User", related_name="followers", on_delete=models.CASCADE)
+
+    # You can even add info about when user started following
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+
+     
+    class Meta:
+        unique_together = ("user_id", "following_user_id",)
+        ordering = ["-created"]
+
+        def __str__(self):
+            f"{self.user_id} follows {self.following_user_id}"
+
+        
+
+
+        
 
 class Tweet(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)

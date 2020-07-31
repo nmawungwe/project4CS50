@@ -122,3 +122,5 @@ def tweetbox(request, tweetbox):
         tweets = tweets.order_by("-timestamp").all()
         return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
 
+        
+
