@@ -9,8 +9,9 @@ class User(AbstractUser):
         return{
             "id": self.id,
             "username":self.username,
-            "following":[user.id for user in self.following.all()],
-            "followers":[user.id for user in self.followers.all()]
+            "tweets":[[tweets.id, tweets.body, tweets.timestamp] for tweets in self.tweets.all()],
+            "following":[[user.id, user.created] for user in self.following.all()],
+            "followers":[[user.id, user.created] for user in self.followers.all()]
 
         }
 
@@ -37,7 +38,7 @@ class UserFollowing(models.Model):
         
 
 class Tweet(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="tweets", on_delete=models.CASCADE)
     body = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.TextField(blank=True)
