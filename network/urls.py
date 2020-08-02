@@ -13,7 +13,7 @@ urlpatterns = [
     #API routes
     path("tweets", views.compose, name="compose"),
     path("tweets/<str:tweetbox>", views.tweetbox, name="tweetbox"),
-    path("tweets/<int:tweet_id>", views.tweet, name="tweet"),
+    path("tweet/<int:tweet_id>", views.tweet, name="tweet"),
     path("user_profile/<int:user_id>", views.user_profile, name="user_profile"),
 
 

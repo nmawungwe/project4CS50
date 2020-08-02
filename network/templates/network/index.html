@@ -2,17 +2,30 @@
 {% load static %}
 
 {% block body %}
-    TODO
+
 <button id="btn">Get Tweet</button>
 <button id="post">Post Tweet</button>
-<button id="all">Get All Tweets</button>
-<button id="following">Get Following Tweets</button>
-<button id="user_profile">User Profile</button>
+<!-- <button id="all_post">Get All Tweets</button> -->
 
+<div id="user_profile_view">
+    <div id="box-heading"></div>
+</div>
 
+<div id="all_posts_view">
+    <div id="box-heading"></div>
+</div>
 
+<div id="following_posts_view">
+    <div id="box-heading"></div>
+</div>
 
-
+<div id="compose-view">
+    <h3>New Post</h3>
+    <form id="compose-form">
+        <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
+        <input type="submit" class="btn btn-primary"/>
+    </form>
+</div>
 
 
 {% endblock %}

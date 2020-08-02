@@ -117,13 +117,12 @@ def tweet(request, tweet_id):
 def tweetbox(request, tweetbox):
     # Filter tweets returned based on tweetbox
     if tweetbox == "all":
-        tweets = Tweet.objects.all()
+        tweets = Tweet.objects.all()    
     elif tweetbox == "following":
         tweets = Tweet.objects.all()
         # find a way of filtering the tweets that are coming from the database maybe a boolean like archived of replied like in email json
     else:
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
-
     # Return emails in reverse chronologial order
     tweets = tweets.order_by("-timestamp").all()
     return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)

@@ -1,7 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+document.querySelector('#user_prof').addEventListener('click',()=>{
+    fetch(`/user_profile/3`).then(response => response.json()).then(user_prof => {
+        // Print email
+        console.log(user_prof)
+    })
+})
+
+document.querySelector('#all_posts').addEventListener('click',()=>{
+    fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+        // Print email
+        console.log(tweets)
+    })
+})
+
+
+
+
+// working sort of 
 document.querySelector('#btn').addEventListener('click',()=>{
-    fetch(`/tweets/2`).then(response => response.json()).then(tweet => {
+
+    id = 50
+    fetch(`/tweet/${id}`).then(response => response.json()).then(tweet => {
         // Print email
         console.log(tweet)
     })
@@ -22,12 +42,7 @@ document.querySelector('#post').addEventListener('click',()=>{
 
 })
 
-document.querySelector('#all').addEventListener('click',()=>{
-    fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
-        // Print email
-        console.log(tweets)
-    })
-})
+
 
 
 document.querySelector('#following').addEventListener('click',()=>{
@@ -37,12 +52,7 @@ document.querySelector('#following').addEventListener('click',()=>{
     })
 })
 
-document.querySelector('#user_profile').addEventListener('click',()=>{
-    fetch(`/user_profile/3`).then(response => response.json()).then(user_prof => {
-        // Print email
-        console.log(user_prof)
-    })
-})
+
 
 
 
