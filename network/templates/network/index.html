@@ -8,19 +8,23 @@
 <!-- <button id="all_post">Get All Tweets</button> -->
 
 <div id="user_profile_view">
-    <div id="box-heading"></div>
+    <button>{{user.username}}</button>
+    <div id="box-heading">User Profile</div>
+    <div id="user_profile_cont"></div>
 </div>
 
-<div id="all_posts_view">
-    <div id="box-heading"></div>
+<div id="all_tweets_view">
+    <div id="box-heading">All Tweets</div>
+    <div id="all_tweets_list"></div>
 </div>
 
-<div id="following_posts_view">
-    <div id="box-heading"></div>
+<div id="following_tweets_view">
+    <div id="box-heading">Following Tweets</div>
+    <div id="following_tweets_list"></div>
 </div>
 
 <div id="compose-view">
-    <h3>New Post</h3>
+    <h3>New Tweet</h3>
     <form id="compose-form">
         <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
         <input type="submit" class="btn btn-primary"/>
