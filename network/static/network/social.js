@@ -15,12 +15,10 @@ document.querySelector('#all_posts').addEventListener('click',()=>{
 })
 
 
-
-
 // working sort of 
 document.querySelector('#btn').addEventListener('click',()=>{
 
-    id = 50
+    id = 1
     fetch(`/tweet/${id}`).then(response => response.json()).then(tweet => {
         // Print email
         console.log(tweet)
