@@ -4,7 +4,7 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/dataset
     const el = document.querySelector('#user_prof')
         // console.log('clicking')
-        user_id = el.dataset.user
+    user_id = el.dataset.user
         // console.log(user_id) 
     user_profile(fetch(`/user_profile/${user_id}`).then(response => response.json()).then(user_prof => {
         // Print email
@@ -30,26 +30,34 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
                   return `<button data-id="${tweet.id}">${tweet.body}<div>${date}</div></button><br>`
             }
-
-
-
-
-
     }))
-    
-    
-
-
 })
 
 document.querySelector('#all_posts').addEventListener('click', ()=>{
 
     const el = document.querySelector('#all_posts')
-    console.log(el.dataset.post)
+    // console.log(el.dataset.post)
 
     all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
             // Print email
-            console.log(tweets)
+            // console.log(tweets)
+            console.log(tweets[0])
+
+            var messages = tweets.map(label).join(' ')
+            document.querySelector('#all_tweets_list').innerHTML = messages
+
+            function label(tweet) {
+
+                let time = new Date(tweet[3])
+                // console.log(time.toDateString())
+                let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                  return `<button data-id="${tweet[0]}">${tweet[1]} ${tweet[2]}<div>${date}</div></button><br>`
+            }
+
+
+
+
         }))
 })
 
@@ -64,20 +72,24 @@ document.querySelector('#all_posts').addEventListener('click', ()=>{
 //     })
 // })
 
-// document.querySelector('#post').addEventListener('click',()=>{
+document.querySelector('form').onsubmit = function() {
 
-//     fetch('/tweets', {
-//         method: 'POST',
-//         body: JSON.stringify({
-//             body: 'Wadii',
-//             likes: '1'
-//         })
-//       }).then(response => response.json()).then(result => {
-//           // Print result
-//           console.log(result);
-//       })
+    const body = document.querySelector('#compose-body').value;
+    const likes = document.querySelector('#likes').value;
 
-// })
+    fetch('/tweets', {
+        method: 'POST',
+        body: JSON.stringify({
+            body: body,
+            likes: likes
+        })
+      }).then(response => response.json()).then(result => {
+          // Print result
+          console.log(result);
+          all_tweets()
+      })
+      return false;
+}
 
 
 
@@ -85,14 +97,61 @@ document.querySelector('#all_posts').addEventListener('click', ()=>{
 document.querySelector('#following').addEventListener('click',()=>{
     following_tweets(fetch(`/tweets/following`).then(response => response.json()).then(tweets => {
         // Print email
-        console.log(tweets)
+        // console.log(tweets)
+        console.log(tweets[0])
+
+        var messages = tweets.map(label).join(' ')
+        document.querySelector('#following_tweets_list').innerHTML = messages
+
+        function label(tweet) {
+
+            let time = new Date(tweet[3])
+            // console.log(time.toDateString())
+            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+              return `<button data-id="${tweet[0]}">${tweet[1]} ${tweet[2]}<div>${date}</div></button><br>`
+        }
+
+
+
+
+
     })
 )})
 
 
 all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
     // Print email
-    console.log(tweets)
+    // console.log(tweets)
+    const el = document.querySelector('#all_posts')
+    // console.log(el.dataset.post)
+
+    all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+            // Print email
+            // console.log(tweets)
+            console.log(tweets[0])
+
+            var messages = tweets.map(label).join(' ')
+            document.querySelector('#all_tweets_list').innerHTML = messages
+
+            function label(tweet) {
+
+                let time = new Date(tweet[3])
+                // console.log(time.toDateString())
+                let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                  return `<button data-id="${tweet[0]}">${tweet[1]} ${tweet[2]}<div>${date}</div></button><br>`
+            }
+
+
+
+
+        }))
+
+
+
+
+
 }))
 })
 
@@ -104,15 +163,23 @@ function compose_tweet() {
     document.querySelector('#following_posts_view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'block';
 
+    // clear tweeting space
+    document.querySelector('#compose-body').value = '';
+    document.querySelector('#likes').value = '';
+
+
 }
 
 function all_tweets() {
     // Show compose view and hide other views
+    document.querySelector('#compose-view').style.display = 'block';
     document.querySelector('#user_profile_view').style.display = 'none';
     document.querySelector('#all_tweets_view').style.display = 'block';
     document.querySelector('#following_tweets_view').style.display = 'none';
-    document.querySelector('#compose-view').style.display = 'block';
 
+        // clear tweeting space
+        document.querySelector('#compose-body').value = '';
+        document.querySelector('#likes').value = '';
 }
 
 function following_tweets() {
@@ -120,7 +187,11 @@ function following_tweets() {
     document.querySelector('#user_profile_view').style.display = 'none';
     document.querySelector('#all_tweets_view').style.display = 'none';
     document.querySelector('#following_tweets_view').style.display = 'block';
-    document.querySelector('#compose-view').style.display = 'none';
+    document.querySelector('#compose-view').style.display = 'block';
+
+        // clear tweeting space
+        document.querySelector('#compose-body').value = '';
+        document.querySelector('#likes').value = '';
 
 }
 
@@ -130,7 +201,5 @@ function user_profile() {
     document.querySelector('#all_tweets_view').style.display = 'none';
     document.querySelector('#following_tweets_view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'none';
-
-   
 
 }

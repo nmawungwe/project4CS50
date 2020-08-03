@@ -8,6 +8,16 @@
 <!-- <button id="post">Post Tweet</button> -->
 <!-- <button id="all_post">Get All Tweets</button> -->
 
+<div id="compose-view">
+    <h3>New Tweet</h3>
+    <form id="compose-form">
+        <textarea class="form-control" id="compose-body" placeholder=""></textarea>
+        <input id="likes" type="text">
+        <input type="submit" class="btn btn-primary"/>
+    </form>
+</div>
+
+
 <div id="user_profile_view">
     <div id="box-heading"></div>  
     <div id="followings"></div>
@@ -25,13 +35,7 @@
     <div id="following_tweets_list"></div>
 </div>
 
-<div id="compose-view">
-    <h3>New Tweet</h3>
-    <form id="compose-form">
-        <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-        <input type="submit" class="btn btn-primary"/>
-    </form>
-</div>
+
 
 
 {% endblock %}
