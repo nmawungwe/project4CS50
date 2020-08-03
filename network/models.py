@@ -9,7 +9,7 @@ class User(AbstractUser):
         return{
             "id": self.id,
             "username":self.username,
-            "tweets":[[tweets.id, tweets.body, tweets.timestamp] for tweets in self.tweets.all()],
+            "tweets": [{"id":tweets.id,"body": tweets.body, "timestamp": tweets.timestamp} for tweets in self.tweets.all()],
             "following":[[user.id, user.created] for user in self.following.all()],
             "followers":[[user.id, user.created] for user in self.followers.all()]
 

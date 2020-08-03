@@ -3,14 +3,16 @@
 
 {% block body %}
 
-<button id="btn">Get Tweet</button>
-<button id="post">Post Tweet</button>
+<!-- pay attention to these buttons -->
+<!-- <button id="btn">Get Tweet</button> -->
+<!-- <button id="post">Post Tweet</button> -->
 <!-- <button id="all_post">Get All Tweets</button> -->
 
 <div id="user_profile_view">
-    <button>{{user.username}}</button>
-    <div id="box-heading">User Profile</div>
-    <div id="user_profile_cont"></div>
+    <div id="box-heading"></div>  
+    <div id="followings"></div>
+    <div id="followers"></div>
+    <div id="user_profile_tweets"></div>
 </div>
 
 <div id="all_tweets_view">
