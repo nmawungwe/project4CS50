@@ -35,46 +35,77 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
 
 document.querySelector('#all_posts').addEventListener('click', ()=>{
 
-    const el = document.querySelector('#all_posts')
-    // console.log(el.dataset.post)
+let el = document.querySelector('#all_posts')
+// console.log(el.dataset.post)
 
-    all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
-            // Print email
-            // console.log(tweets)
-            console.log(tweets[0])
+all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+        // Print email
+        // console.log(tweets)
+        console.log(tweets[3])
 
-            var messages = tweets.map(label).join(' ')
-            document.querySelector('#all_tweets_list').innerHTML = messages
+        var messages = tweets.map(label).join(' ')
+        document.querySelector('#all_tweets_list').innerHTML = messages
 
-            function label(tweet) {
+        function label(tweet) {
 
-                let time = new Date(tweet[3])
-                // console.log(time.toDateString())
-                let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-                // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                  return `<button data-id="${tweet[0]}">${tweet[1]} ${tweet[2]}<div>${date}</div></button><br>`
-            }
+            let time = new Date(tweet[4])
+            // console.log(time.toDateString())
+            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                return `<button class="tweet" data-id="${tweet[1]}">${tweet[2]}<br> ${tweet[3]}<br><div>${date}</div></button><br>`
+        }
+document.querySelectorAll('.tweet').forEach(button=>{
+    button.onclick = function() {
+        
+    
+    poster_id = this.dataset.id
+    console.log(poster_id)
+
+    poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
+        // Print email
+        // console.log(user_prof)
+        // console.log(user_prof.id)
+        const  followers = user_prof.followers.length
+        const  following = user_prof.following.length
+
+        document.querySelector('#box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
+        document.querySelector('#followers').innerHTML = `<b>Followers: </b>${followers}`
+        document.querySelector('#followings').innerHTML = `<b>Following: </b>${following}`
+        document.querySelector('#following-btn').innerHTML = `<button>Follow</button>`
+        document.querySelector('#unfollowing-btn').innerHTML = `<button>Unfollow</button>`
+
+
+    }))
+
+
+
+
+    }
+
+})
 
 
 
 
         }))
+
+
 })
 
 
 // working sort of 
-document.querySelector('#btn').addEventListener('click',()=>{
+// document.querySelector('#btn').addEventListener('click',()=>{
 
 
 
-fetch('/user_profile/5', {
-    method: 'POST'
-    }).then(response => response.json()).then(result => {
-        // Print result
-        console.log(result);
-    })    
+// fetch('/user_profile/5', {
+//     method: 'POST'
+//     }).then(response => response.json()).then(result => {
+//         // Print result
+//         console.log(result);
+//     })    
 
-})
+// })
 
 document.querySelector('form').onsubmit = function() {
 
@@ -133,7 +164,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
     all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
             // Print email
             // console.log(tweets)
-            console.log(tweets[0])
+            // console.log(tweets[0])
 
             var messages = tweets.map(label).join(' ')
             document.querySelector('#all_tweets_list').innerHTML = messages
@@ -200,6 +231,15 @@ function following_tweets() {
 }
 
 function user_profile() {
+    // Show compose view and hide other views
+    document.querySelector('#user_profile_view').style.display = 'block';
+    document.querySelector('#all_tweets_view').style.display = 'none';
+    document.querySelector('#following_tweets_view').style.display = 'none';
+    document.querySelector('#compose-view').style.display = 'none';
+
+}
+
+function poster_profile() {
     // Show compose view and hide other views
     document.querySelector('#user_profile_view').style.display = 'block';
     document.querySelector('#all_tweets_view').style.display = 'none';
