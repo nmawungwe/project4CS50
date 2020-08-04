@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User, Tweet
+from .models import User, Tweet, UserFollowing
 
 
 def index(request):
