@@ -41,7 +41,7 @@ let el = document.querySelector('#all_posts')
 all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
         // Print email
         // console.log(tweets)
-        console.log(tweets[3])
+        // console.log(tweets[3])
 
         var messages = tweets.map(label).join(' ')
         document.querySelector('#all_tweets_list').innerHTML = messages
@@ -59,7 +59,7 @@ document.querySelectorAll('.tweet').forEach(button=>{
         
     
     poster_id = this.dataset.id
-    console.log(poster_id)
+    // console.log(poster_id)
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
         // Print email
@@ -71,7 +71,7 @@ document.querySelectorAll('.tweet').forEach(button=>{
         document.querySelector('#box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
         document.querySelector('#followers').innerHTML = `<b>Followers: </b>${followers}`
         document.querySelector('#followings').innerHTML = `<b>Following: </b>${following}`
-        document.querySelector('#following-btn').innerHTML = `<button>Follow</button>`
+        document.querySelector('#following-btn').innerHTML = `<button class="following" data-id=${user_prof.id}>Follow</button>`
         document.querySelector('#unfollowing-btn').innerHTML = `<button>Unfollow</button>`
 
 
@@ -83,7 +83,14 @@ document.querySelectorAll('.tweet').forEach(button=>{
     }
 
 })
+document.querySelector('#following-btn').addEventListener('click', ()=>{
+    console.log("Ehe wadii??")
+    let following = document.querySelector('.following')
 
+    following_id = following.dataset.id
+    console.log(following_id)
+
+})
 
 
 

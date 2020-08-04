@@ -131,12 +131,6 @@ def tweetbox(request, tweetbox):
 @csrf_exempt
 @login_required
 def user_profile(request, user_id):
-    # if request.method == "POST":
-        # try:
-        #     following = UserFollowing(user_id=request.user, following_user_id=user_id)
-        #     following.save()
-        #     return JsonResponse({"message": "Following made successfully."}, status=201)
-     # Query for requested user
         try:
             user_prof = User.objects.get(pk=user_id)
         except User.DoesNotExist:
