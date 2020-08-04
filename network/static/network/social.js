@@ -63,14 +63,18 @@ document.querySelector('#all_posts').addEventListener('click', ()=>{
 
 
 // working sort of 
-// document.querySelector('#btn').addEventListener('click',()=>{
+document.querySelector('#btn').addEventListener('click',()=>{
 
-//     id = 1
-//     fetch(`/tweet/${id}`).then(response => response.json()).then(tweet => {
-//         // Print email
-//         console.log(tweet)
-//     })
-// })
+
+
+fetch('/user_profile/5', {
+    method: 'POST'
+    }).then(response => response.json()).then(result => {
+        // Print result
+        console.log(result);
+    })    
+
+})
 
 document.querySelector('form').onsubmit = function() {
 

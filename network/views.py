@@ -127,26 +127,26 @@ def tweetbox(request, tweetbox):
     tweets = tweets.order_by("-timestamp").all()
     return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
 
+
+@csrf_exempt
 @login_required
 def user_profile(request, user_id):
-
+    # if request.method == "POST":
+        # try:
+        #     following = UserFollowing(user_id=request.user, following_user_id=user_id)
+        #     following.save()
+        #     return JsonResponse({"message": "Following made successfully."}, status=201)
      # Query for requested user
-    try:
-        user_prof = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
-        return JsonResponse({"error": "User not found."}, status=404)
-
-    # Return post contents
-    if request.method == "GET":
-        return JsonResponse(user_prof.serialize())
-
-
-
-    
-
-
-
-    
-
-        
-
+        try:
+            user_prof = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({"error": "User not found."}, status=404)
+        # # Return post contents
+        if request.method == "GET":
+            return JsonResponse(user_prof.serialize())
+        else:
+            user_id = User.objects.get(pk=user_id)
+            following = UserFollowing(user_id=request.user, following_user_id=user_id)
+            following.save()
+            return JsonResponse({"message": "Following made successfully."}, status=201)
+            
