@@ -5,7 +5,7 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
     const el = document.querySelector('#user_prof')
         // console.log('clicking')
     user_id = el.dataset.user
-        // console.log(user_id) 
+        console.log(user_id) 
     user_profile(fetch(`/user_profile/${user_id}`).then(response => response.json()).then(user_prof => {
         // Print email
         // console.log(user_prof)
@@ -72,8 +72,8 @@ document.querySelectorAll('.tweet').forEach(button=>{
         document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
         document.querySelector('#poster-followers').innerHTML = `<b>Followers: </b>${followers}`
         document.querySelector('#poster-followings').innerHTML = `<b>Following: </b>${following}`
-        document.querySelector('#poster-following-btn').innerHTML = `<button class="following" data-id=${user_prof.id}>Follow</button>`
-        document.querySelector('#poster-unfollowing-btn').innerHTML = `<button>Unfollow</button>`
+        document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+        document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
 
 
     }))
@@ -103,6 +103,32 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
 
 })
 
+document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
+    
+    // console.log("Ehe wadii??")
+    let unfollowing = document.querySelector('.unfollowing')
+    unfollowing_id = unfollowing.dataset.id
+    console.log(unfollowing_id)
+
+
+    fetch(`/user_profile/${unfollowing_id}`, {
+    method: 'DELETE'
+    }).then(response => response.json()).then(result => {
+        // Print result
+        console.log(result);
+    }) 
+    all_tweets()
+
+
+})
+
+
+
+
+
+
+
+
 
 
         }))
@@ -116,8 +142,8 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
 
 
 
-// fetch('/user_profile/5', {
-//     method: 'POST'
+// fetch('/user_profile/6', {
+//     method: 'DELETE'
 //     }).then(response => response.json()).then(result => {
 //         // Print result
 //         console.log(result);
