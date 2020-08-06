@@ -35,7 +35,7 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
 
 document.querySelector('#all_posts').addEventListener('click', ()=>{
 
-let el = document.querySelector('#all_posts')
+// let el = document.querySelector('#all_posts')
 // console.log(el.dataset.post)
 
 all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
@@ -77,16 +77,11 @@ document.querySelectorAll('.tweet').forEach(button=>{
 
 
     }))
+    }})
 
-
-
-
-    }
-
-})
 document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
     
-    console.log("Ehe wadii??")
+    // console.log("Ehe wadii??")
     let following = document.querySelector('.following')
     following_id = following.dataset.id
     // console.log(following_id)
@@ -98,9 +93,7 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
         // Print result
         console.log(result);
     }) 
-    all_tweets()
-
-
+    // all_tweets()
 })
 
 document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
@@ -117,23 +110,9 @@ document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>
         // Print result
         console.log(result);
     }) 
-    all_tweets()
-
-
+    // all_tweets()
 })
-
-
-
-
-
-
-
-
-
-
-        }))
-
-
+}))
 })
 
 
@@ -177,11 +156,10 @@ document.querySelector('#following').addEventListener('click',()=>{
     following_tweets(fetch(`/tweets/following`).then(response => response.json()).then(tweets => {
         // Print email
         // console.log(tweets)
-        console.log(tweets[0])
+        // console.log(tweets[0])
 
         var messages = tweets.map(label).join(' ')
         document.querySelector('#following_tweets_list').innerHTML = messages
-
         function label(tweet) {
 
             let time = new Date(tweet[4])
@@ -190,11 +168,6 @@ document.querySelector('#following').addEventListener('click',()=>{
             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
             return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet[1]}"><a><b>${tweet[2]}</b></a><br>${tweet[3]}<br><div>${date}<br></div></button><br>`
         }
-
-
-
-
-
     })
 )})
 
@@ -204,7 +177,6 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
     // console.log(tweets)
     const el = document.querySelector('#all_posts')
     // console.log(el.dataset.post)
-
     all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
             // Print email
             // console.log(tweets)
@@ -219,18 +191,75 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
                 // console.log(time.toDateString())
                 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                  return `<button class="btn btn-light bd btn-block" data-id="${tweet[1]}"><a><b>${tweet[2]}</b><a/><br>${tweet[3]}<br>${date}</button><br>`
+                  return `<button class="btn btn-light bd btn-block tweet" data-id="${tweet[1]}"><a><b>${tweet[2]}</b><a/><br>${tweet[3]}<br>${date}</button><br>`
             }
 
+document.querySelectorAll('.tweet').forEach(button=>{
+    button.onclick = function() {
+        
+    
+    poster_id = this.dataset.id
+    // console.log(poster_id)
+
+
+    poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
+        // Print email
+        // console.log(user_prof)
+        // console.log(user_prof.id)
+        const  followers = user_prof.followers.length
+        const  following = user_prof.following.length
+
+        document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
+        document.querySelector('#poster-followers').innerHTML = `<b>Followers: </b>${followers}`
+        document.querySelector('#poster-followings').innerHTML = `<b>Following: </b>${following}`
+        document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+        document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
+
+
+    }))
+    }})
+
+document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
+
+    // console.log("Ehe wadii??")
+    let following = document.querySelector('.following')
+    following_id = following.dataset.id
+    console.log(following_id)
+
+
+    fetch(`/user_profile/${following_id}`, {
+    method: 'POST'
+    }).then(response => response.json()).then(result => {
+        // Print result
+        console.log(result);
+    }) 
+    // all_tweets()
+})
+
+document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
+    
+    // console.log("Ehe wadii??")
+    let unfollowing = document.querySelector('.unfollowing')
+    unfollowing_id = unfollowing.dataset.id
+    console.log(unfollowing_id)
+
+
+    fetch(`/user_profile/${unfollowing_id}`, {
+    method: 'DELETE'
+    }).then(response => response.json()).then(result => {
+        // Print result
+        console.log(result);
+    }) 
+    // all_tweets()
+})
+    
+
+
+            
 
 
 
-        }))
-
-
-
-
-
+    }))
 }))
 })
 

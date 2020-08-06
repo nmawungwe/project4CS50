@@ -119,7 +119,10 @@ def tweetbox(request, tweetbox):
     if tweetbox == "all":
         tweets = Tweet.objects.all()    
     elif tweetbox == "following":
-        tweets = Tweet.objects.all()
+        tweets = Tweet.objects.all() 
+        #         tweets = Tweet.objects.filter(
+        #     user=request.user, sender=request.user
+        # )
         # find a way of filtering the tweets that are coming from the database maybe a boolean like archived of replied like in email json
     else:
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
