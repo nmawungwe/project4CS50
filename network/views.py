@@ -119,6 +119,7 @@ def tweetbox(request, tweetbox):
     if tweetbox == "all":
         tweets = Tweet.objects.all()    
     elif tweetbox == "following":
+        # https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
         user = request.user
         tweets = Tweet.objects.filter(user__followers__user_id=user)
         # following_user_ids = UserFollowing.objects.filter(following_user_id__following = request.user.id).values_list('following_user_id__user_id', flat=True).distinct()
@@ -126,14 +127,14 @@ def tweetbox(request, tweetbox):
         # tweets = Tweet.objects.all() 
         # tweets = Tweet.objects.filter(user=request.user)
         # find a way of filtering the tweets that are coming from the database maybe a boolean like archived of replied like in email json
-
-
-
     else:
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
     # Return emails in reverse chronologial order
     tweets = tweets.order_by("-timestamp").all()
     return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
+
+
+    
 
 
 @csrf_exempt
