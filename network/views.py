@@ -12,8 +12,11 @@ from .models import User, Tweet, UserFollowing
 
 
 def index(request):
-
-    return render(request, "network/index.html")
+    if request.user.is_authenticated:
+        return render(request, "network/logged.html")
+    # Everyone else is prompted to sign in
+    else:
+        return render(request, "network/index.html")
 
 
 def login_view(request):
