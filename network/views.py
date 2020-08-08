@@ -113,7 +113,7 @@ def tweet(request, tweet_id):
         return JsonResponse(tweet.serialize())
 
 
-@login_required
+# @login_required
 def tweetbox(request, tweetbox):
     # Filter tweets returned based on tweetbox
     if tweetbox == "all":
