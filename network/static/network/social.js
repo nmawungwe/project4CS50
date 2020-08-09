@@ -48,7 +48,7 @@ document.querySelector('#all_posts').addEventListener('click', ()=>{
 
 all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
         // Print email
-        // console.log(tweets)
+        console.log(tweets)
         // console.log(tweets[3])
 
         var messages = tweets.map(label).join(' ')
@@ -56,18 +56,18 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
         function label(tweet) {
 
-            let time = new Date(tweet[4])
+            let time = new Date(tweet.time)
             // console.log(time.toDateString())
             let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet[1]}"><a><b>${tweet[2]}</b></a><br>${tweet[3]}<br><div>${date}<br></div></button><br>`
+                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
         }
 document.querySelectorAll('.tweet').forEach(button=>{
     button.onclick = function() {
         
     
     poster_id = this.dataset.id
-    // console.log(poster_id)
+    console.log(poster_id)
 
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
@@ -169,11 +169,11 @@ document.querySelector('#following').addEventListener('click',()=>{
         document.querySelector('#following_tweets_list').innerHTML = messages
         function label(tweet) {
 
-            let time = new Date(tweet[4])
+            let time = new Date(tweet.time)
             // console.log(time.toDateString())
             let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-            return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet[1]}"><a><b>${tweet[2]}</b></a><br>${tweet[3]}<br><div>${date}<br></div></button><br>`
+            return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
         }
     })
 )})
@@ -194,11 +194,11 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
             function label(tweet) {
 
-                let time = new Date(tweet[4])
+                let time = new Date(tweet.time)
                 // console.log(time.toDateString())
                 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                  return `<button class="btn btn-light bd btn-block tweet" data-id="${tweet[1]}"><a><b>${tweet[2]}</b><a/><br>${tweet[3]}<br>${date}</button><br>`
+                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
             }
 
 document.querySelectorAll('.tweet').forEach(button=>{
@@ -259,14 +259,7 @@ document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>
     }) 
     // all_tweets()
 })
-    
-
-
-            
-
-
-
-    }))
+}))
 }))
 })
 
@@ -291,6 +284,7 @@ function all_tweets() {
     document.querySelector('#user_profile_view').style.display = 'none';
     document.querySelector('#all_tweets_view').style.display = 'block';
     document.querySelector('#following_tweets_view').style.display = 'none';
+    document.querySelector('#poster_profile_view').style.display = 'none';
 
         // clear tweeting space
         document.querySelector('#compose-body').value = '';

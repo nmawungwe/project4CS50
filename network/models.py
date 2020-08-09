@@ -42,10 +42,10 @@ class Tweet(models.Model):
     body = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-
-
+# listing is actually quite tricky
+# https://stackoverflow.com/questions/26067369/how-to-pass-model-fields-to-a-jsonresponse-object
     def serialize(self):
-        return [ self.id, self.user.id, self.user.username,self.body,self.timestamp]
+        return {'id':self.id,'user_id':self.user.id, 'user_username':self.user.username,'body':self.body,'time':self.timestamp}
 
     
 
