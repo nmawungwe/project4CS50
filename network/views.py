@@ -117,9 +117,10 @@ def tweet(request, tweet_id):
         return JsonResponse(tweet.serialize(), safe=False)
     elif request.method == "PUT":
         data = json.loads(request.body)
+         # Get contents of post
         tweet.body = data
         tweet.save()
-        return HttpResponse(status=204)
+        return JsonResponse({"error": "Tweet update was successful"}, status=201)
         # Email must be via GET or PUT
     else:
         return JsonResponse({"error": "GET or PUT request required."}, status=400)

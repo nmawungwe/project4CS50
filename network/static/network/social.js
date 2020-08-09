@@ -30,20 +30,87 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
                   return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}"><div class="tweet_body">${tweet.body}</div><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
             }
-            document.querySelector('.edit').addEventListener('click', ()=>{
-                // console.log("So!")
-                let el = document.querySelector('.edit')
-                tweet_id = el.dataset.tweet
-                fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
-                  console.log(tweet) 
-                document.querySelector('.tweet_body').innerHTML = `<input type="text"><br><br>`
-                    
+document.querySelectorAll('.edit').forEach(button=>{
+    button.onclick = function() {
 
-
-
+        tweet_id = this.dataset.tweet
+        fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
+            console.log(tweet) 
+        document.querySelector('.tweet_body').innerHTML = `<form id="edit-form">
+        <textarea class="form-control" id="tweet_edit">${tweet.body}</textarea>
+        <input type="submit" class="btn btn-primary edit_btn" data-tweet=${tweet.id} data-user=${tweet.user_id} value="Post"/>
+        </form>`
+document.querySelector('.edit').innerHTML ='' 
+document.querySelector('.edit_btn').addEventListener('click', ()=>{
+    let edit = document.querySelector('#tweet_edit').value;
+    let el = document.querySelector('.edit_btn')
+    tweet_id=el.dataset.tweet  
+    user_id=el.dataset.user  
+            // console.log("So!")
+            fetch(`/tweet/${tweet_id}`, {
+                method: 'PUT',
+                body: JSON.stringify(edit)
+                }).then(response => response.json()).then(response => {
+                    // console.log(response)
                 })
-            })
-    }))
+
+
+
+ 
+                
+
+
+
+                user_profile(fetch(`/user_profile/${user_id}`).then(response => response.json()).then(user_prof => {
+                    // Print email
+                    // console.log(user_prof)
+                    // console.log(user_prof.id)
+                    const  followers = user_prof.followers.length
+                    const  following = user_prof.following.length
+            
+                    document.querySelector('#box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
+                    document.querySelector('#followers').innerHTML = `<b>Followers: </b>${followers}`
+                    document.querySelector('#followings').innerHTML = `<b>Following: </b>${following}`
+            
+                    // console.log(user_prof.tweets)  
+            
+                    var messages = user_prof.tweets.map(label).join(' ')
+                    document.querySelector('#user_profile_tweets').innerHTML = messages
+            
+                    function label(tweet) {
+            
+                            let time = new Date(tweet.timestamp)
+                            // console.log(time.toDateString())
+                            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                              return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}"><div class="tweet_body">${tweet.body}</div><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
+                        }
+                    
+                    
+                    
+                    }))
+
+
+
+
+
+
+
+
+
+
+
+
+                
+        })
+        })
+
+    
+    }
+
+    // console.log("So!")
+})
+}))
 })
 
 document.querySelector('#all_posts').addEventListener('click', ()=>{
