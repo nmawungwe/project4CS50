@@ -5,7 +5,7 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
     const el = document.querySelector('#user_prof')
         // console.log('clicking')
     user_id = el.dataset.user
-        console.log(user_id) 
+        // console.log(user_id) 
     user_profile(fetch(`/user_profile/${user_id}`).then(response => response.json()).then(user_prof => {
         // Print email
         // console.log(user_prof)
@@ -17,7 +17,7 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
         document.querySelector('#followers').innerHTML = `<b>Followers: </b>${followers}`
         document.querySelector('#followings').innerHTML = `<b>Following: </b>${following}`
 
-        console.log(user_prof.tweets)  
+        // console.log(user_prof.tweets)  
 
         var messages = user_prof.tweets.map(label).join(' ')
         document.querySelector('#user_profile_tweets').innerHTML = messages
@@ -28,8 +28,16 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
                 // console.log(time.toDateString())
                 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                  return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}">${tweet.body}<br><div>${date}</div></button><br>`
+                  return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}">${tweet.body}<br><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
             }
+            document.querySelector('.edit').addEventListener('click', ()=>{
+                // console.log("So!")
+                let el = document.querySelector('.edit')
+                tweet_id = el.dataset.tweet
+                fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
+                  console.log(tweet)  
+                })
+            })
     }))
 })
 
@@ -133,13 +141,12 @@ document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>
 document.querySelector('form').onsubmit = function() {
 
     const body = document.querySelector('#compose-body').value;
-    const likes = document.querySelector('#likes').value;
+
 
     fetch('/tweets', {
         method: 'POST',
         body: JSON.stringify({
             body: body,
-            likes: likes
         })
       }).then(response => response.json()).then(result => {
           // Print result
@@ -273,7 +280,7 @@ function compose_tweet() {
 
     // clear tweeting space
     document.querySelector('#compose-body').value = '';
-    document.querySelector('#likes').value = '';
+
 
 
 }
@@ -287,7 +294,7 @@ function all_tweets() {
 
         // clear tweeting space
         document.querySelector('#compose-body').value = '';
-        document.querySelector('#likes').value = '';
+
 }
 
 function following_tweets() {
@@ -300,7 +307,7 @@ function following_tweets() {
 
         // clear tweeting space
         document.querySelector('#compose-body').value = '';
-        document.querySelector('#likes').value = '';
+
 
 }
 

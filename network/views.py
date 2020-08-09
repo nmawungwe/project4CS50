@@ -12,6 +12,7 @@ from .models import User, Tweet, UserFollowing
 
 
 def index(request):
+    # https://docs.djangoproject.com/en/3.0/topics/auth/default/
     if request.user.is_authenticated:
         return render(request, "network/logged.html")
     # Everyone else is prompted to sign in
@@ -113,7 +114,17 @@ def tweet(request, tweet_id):
 
     # Return post contents
     if request.method == "GET":
-        return JsonResponse(tweet.serialize())
+        return JsonResponse(tweet.serialize(), safe=False)
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        tweet.body = data
+        tweet.save()
+        return HttpResponse(status=204)
+        # Email must be via GET or PUT
+    else:
+        return JsonResponse({"error": "GET or PUT request required."}, status=400)
+
+        
 
 
 # @login_required

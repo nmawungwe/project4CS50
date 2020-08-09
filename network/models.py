@@ -26,7 +26,7 @@ class UserFollowing(models.Model):
 
      
     class Meta:
-        unique_together = ("user_id", "following_user_id",)
+        unique_together = (('user_id', 'following_user_id'),)
         ordering = ["-created"]
 
         # def __str__(self):
@@ -41,11 +41,11 @@ class Tweet(models.Model):
     user = models.ForeignKey(User, related_name="tweets", on_delete=models.CASCADE)
     body = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    likes = models.TextField(blank=True)
+
 
 
     def serialize(self):
-        return [ self.id, self.user.id, self.user.username,self.body,self.timestamp, self.likes ]
+        return [ self.id, self.user.id, self.user.username,self.body,self.timestamp]
 
     
 
