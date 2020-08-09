@@ -28,14 +28,19 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
                 // console.log(time.toDateString())
                 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                  return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}">${tweet.body}<br><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
+                  return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}"><div class="tweet_body">${tweet.body}</div><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
             }
             document.querySelector('.edit').addEventListener('click', ()=>{
                 // console.log("So!")
                 let el = document.querySelector('.edit')
                 tweet_id = el.dataset.tweet
                 fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
-                  console.log(tweet)  
+                  console.log(tweet) 
+                document.querySelector('.tweet_body').innerHTML = `<input type="text"><br><br>`
+                    
+
+
+
                 })
             })
     }))
