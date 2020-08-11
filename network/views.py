@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User, Tweet, UserFollowing
+from .models import User, Tweet, UserFollowing, Like
 
 
 def index(request):
@@ -84,7 +84,7 @@ def compose(request):
 
     # Get contents of post
     body = data.get("body", "")
-    likes = data.get("likes", "")
+
 
     # Create tweet
     users = set()
@@ -92,8 +92,7 @@ def compose(request):
     for user in users:
         tweet = Tweet(
             user=user,
-            body=body,
-            likes=likes
+            body=body
         )
         tweet.save()
     return JsonResponse({"message": "Tweet made successfully."}, status=201)
@@ -103,7 +102,7 @@ def compose(request):
 
 
 @csrf_exempt
-@login_required
+# @login_required
 def tweet(request, tweet_id):
     
     # Query for requested post
@@ -120,10 +119,15 @@ def tweet(request, tweet_id):
          # Get contents of post
         tweet.body = data
         tweet.save()
-        return JsonResponse({"error": "Tweet update was successful"}, status=201)
+        return JsonResponse({"success": "Tweet update was successful"}, status=201)
+    elif request.method == "POST":
+        data = json.loads(request.body)
+        liking = Like(tweet=tweet, count=data)
+        liking.save()
         # Email must be via GET or PUT
+        return JsonResponse({"success": "liking was successful"}, status=201)
     else:
-        return JsonResponse({"error": "GET or PUT request required."}, status=400)
+        return JsonResponse({"error": "GET, POST or PUT request was unsuccesful."}, status=201)
 
         
 

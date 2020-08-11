@@ -182,18 +182,19 @@ document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>
 
 
 // working sort of 
-// document.querySelector('#btn').addEventListener('click',()=>{
+document.querySelector('#liking').addEventListener('click',()=>{
 
 
 
-// fetch('/user_profile/6', {
-//     method: 'DELETE'
-//     }).then(response => response.json()).then(result => {
-//         // Print result
-//         console.log(result);
-//     })    
+fetch('/tweet/18', {
+    method: 'POST',
+    body: 2
+    }).then(response => response.json()).then(result => {
+        // Print result
+        console.log(result);
+    })    
 
-// })
+})
 
 document.querySelector('form').onsubmit = function() {
 
