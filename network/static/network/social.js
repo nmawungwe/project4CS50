@@ -24,7 +24,7 @@ document.querySelector('#user_prof').addEventListener('click',()=>{
 
         function label(tweet) {
 
-                let time = new Date(tweet.timestamp)
+                let time = new Date(tweet.time)
                 // console.log(time.toDateString())
                 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
@@ -53,14 +53,6 @@ document.querySelector('.edit_btn').addEventListener('click', ()=>{
                 }).then(response => response.json()).then(response => {
                     // console.log(response)
                 })
-
-
-
- 
-                
-
-
-
                 user_profile(fetch(`/user_profile/${user_id}`).then(response => response.json()).then(user_prof => {
                     // Print email
                     // console.log(user_prof)
@@ -84,30 +76,11 @@ document.querySelector('.edit_btn').addEventListener('click', ()=>{
                             let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
                               return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}"><div class="tweet_body">${tweet.body}</div><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
-                        }
-                    
-                    
-                    
-                    }))
-
-
-
-
-
-
-
-
-
-
-
-
-                
+                        }            
+                    }))            
         })
-        })
-
-    
+        })   
     }
-
     // console.log("So!")
 })
 }))
@@ -144,7 +117,7 @@ document.querySelectorAll('.tweet').forEach(button=>{
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
         // Print email
-        // console.log(user_prof)
+        console.log(user_prof.tweets)
         // console.log(user_prof.id)
         const  followers = user_prof.followers.length
         const  following = user_prof.following.length
@@ -156,6 +129,18 @@ document.querySelectorAll('.tweet').forEach(button=>{
         document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
 
 
+
+        var messages = user_prof.tweets.map(label).join(' ')
+        document.querySelector('#poster_profile_tweets').innerHTML = messages
+
+        function label(tweet) {
+
+            let time = new Date(tweet.time)
+            // console.log(time.toDateString())
+            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+            return `<button class="tweet btn btn-light bd btn-block"><a><b>${user_prof.username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
+        }
     }))
     }})
 
@@ -295,6 +280,17 @@ document.querySelectorAll('.tweet').forEach(button=>{
         document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
 
 
+        var messages = user_prof.tweets.map(label).join(' ')
+        document.querySelector('#poster_profile_tweets').innerHTML = messages
+
+        function label(tweet) {
+
+            let time = new Date(tweet.time)
+            // console.log(time.toDateString())
+            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+            return `<button class="tweet btn btn-light bd btn-block"><a><b>${user_prof.username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
+        }
     }))
     }})
 
