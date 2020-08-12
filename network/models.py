@@ -45,6 +45,7 @@ class Tweet(models.Model):
  
 # listing is actually quite tricky
 # https://stackoverflow.com/questions/26067369/how-to-pass-model-fields-to-a-jsonresponse-object
+# https://stackoverflow.com/questions/48008184/method-object-is-not-json-serializable
     def serialize(self):
         return {'id':self.id,'user_id':self.user.id, 'user_username':self.user.username,'body':self.body,'time':self.timestamp, 'likes':self.likes.count()}
 
