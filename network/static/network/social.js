@@ -186,7 +186,7 @@ document.querySelector('#liking').addEventListener('click',()=>{
 
 
 
-fetch('/tweet/18', {
+fetch('/tweet/5', {
     method: 'POST',
     body: 2
     }).then(response => response.json()).then(result => {
