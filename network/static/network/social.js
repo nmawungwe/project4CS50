@@ -76,7 +76,8 @@ document.querySelector('.edit_btn').addEventListener('click', ()=>{
                             let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
                             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
                               return `<button class="btn btn-light bd btn-block" data-id="${tweet.id}"><div class="tweet_body">${tweet.body}</div><div>${date}</div><a href="#" class="edit" data-tweet="${tweet.id}">Edit</a></button><br>`
-                        }            
+                        }  
+                              
                     }))            
         })
         })   
@@ -105,7 +106,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
             // console.log(time.toDateString())
             let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
+                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br></div><div class="App"></div></button><br>`
         }
 document.querySelectorAll('.tweet').forEach(button=>{
     button.onclick = function() {
@@ -186,7 +187,7 @@ document.querySelector('#liking').addEventListener('click',()=>{
 
 
 
-fetch('/tweet/17', {
+fetch('/tweet/10', {
     method: 'POST',
     body: 2
     }).then(response => response.json()).then(result => {

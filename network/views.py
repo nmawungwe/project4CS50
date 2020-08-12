@@ -102,12 +102,12 @@ def compose(request):
 
 
 @csrf_exempt
-# @login_required
+@login_required
 def tweet(request, tweet_id):
     
     # Query for requested post
     try:
-        tweet = Tweet.objects.get(user=request.user, pk=tweet_id)
+        tweet = Tweet.objects.get(pk=tweet_id)
     except Tweet.DoesNotExist:
         return JsonResponse({"error": "Tweet not found."}, status=404)
 
@@ -121,7 +121,6 @@ def tweet(request, tweet_id):
         tweet.save()
         return JsonResponse({"success": "Tweet update was successful"}, status=201)
     elif request.method == "POST":
-        tweet = Tweet.objects.get(pk=tweet_id)
         data = json.loads(request.body)
         liking = Like(tweet=tweet, count=data)
         liking.save()
