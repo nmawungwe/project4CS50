@@ -94,8 +94,8 @@ document.querySelector('#all_posts').addEventListener('click', ()=>{
 
 all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
         // Print email
-        console.log(tweets)
-        // console.log(tweets[3])
+        // console.log(tweets)
+        console.log(tweets[3])
 
         var messages = tweets.map(label).join(' ')
         document.querySelector('#all_tweets_list').innerHTML = messages
@@ -106,14 +106,62 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
             // console.log(time.toDateString())
             let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
             // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br></div><div class="App"></div></button><br>`
+                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
+                <input type="submit" class="btn btn-primary like" value="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/>${tweet.likes}</form></div></button><br>`
         }
+
+
+        document.querySelector('.like_form').onsubmit = function() {
+
+            let like = document.querySelector('.like')
+            tweet_id = like.dataset.id
+            likes = like.dataset.likes
+
+            likes = likes++
+
+            fetch(`/tweet/${tweet_id}`, 
+            {
+                method: 'POST',
+                body: likes
+                }).then(response => response.json()).then(result => {
+                    // Print result
+                    console.log(result);
+                    all_tweets((fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+                        // Print email
+                        // console.log(tweets)
+                        console.log(tweets[3])
+                
+                        var messages = tweets.map(label).join(' ')
+                        document.querySelector('#all_tweets_list').innerHTML = messages
+                
+                        function label(tweet) {
+                
+                            let time = new Date(tweet.time)
+                            // console.log(time.toDateString())
+                            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
+                                <input type="submit" class="btn btn-primary like" value="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/>${tweet.likes}</form></div></button><br>`
+                        }}))
+
+
+                    )
+                })    
+                return false
+            
+        }
+
+
+
+ 
+
+
 document.querySelectorAll('.tweet').forEach(button=>{
     button.onclick = function() {
         
     
     poster_id = this.dataset.id
-    console.log(poster_id)
+    // console.log(poster_id)
 
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
@@ -183,19 +231,20 @@ document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>
 
 
 // working sort of 
-document.querySelector('#liking').addEventListener('click',()=>{
+// document.querySelector('#liking').addEventListener('click',()=>{
 
 
 
-fetch('/tweet/10', {
-    method: 'POST',
-    body: 2
-    }).then(response => response.json()).then(result => {
-        // Print result
-        console.log(result);
-    })    
-
-})
+// fetch('/tweet/10', {
+//     method: 'POST',
+//     body: 2
+//     }).then(response => response.json()).then(result => {
+//         // Print result
+//         console.log(result);
+//         all_tweets()
+//     })    
+//     return false;
+// })
 
 document.querySelector('form').onsubmit = function() {
 
