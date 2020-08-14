@@ -202,17 +202,38 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
     // console.log("Ehe wadii??")
     let following = document.querySelector('.following')
     following_id = following.dataset.id
-    // console.log(following_id)
+    console.log(following.innerHTML)
 
-
-    fetch(`/user_profile/${following_id}`, {
-    method: 'POST'
-    }).then(response => response.json()).then(result => {
-        // Print result
-        console.log(result);
-    }) 
-    // all_tweets()
+    if (following.innerHTML===following) {
+        fetch(`/user_profile/${following_id}`, {
+            method: 'POST'
+            }).then(response => response.json()).then(result => {
+                // Print result
+                // console.log(result);
+            }) 
+            // all_tweets()
+        }else{
+        fetch(`/user_profile/${following_id}`, {
+        method: 'DELETE'
+        }).then(response => response.json()).then(result => {
+            // Print result
+            // console.log(result);       
+    },
+    )}
+    document.querySelector('.following').innerHTML = `unfollow`
 })
+
+
+
+
+//     fetch(`/user_profile/${following_id}`, {
+//     method: 'POST'
+//     }).then(response => response.json()).then(result => {
+//         // Print result
+//         // console.log(result);
+//     }) 
+//     // all_tweets()
+// })
 
 document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
     
