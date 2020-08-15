@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import json
 
 
 class User(AbstractUser):
@@ -10,8 +11,8 @@ class User(AbstractUser):
             "id": self.id,
             "username":self.username,
             "tweets": [{"id":tweets.id,"body": tweets.body, "time": tweets.timestamp} for tweets in self.tweets.all()],
-            "following":[[user.id, user.created] for user in self.following.all()],
-            "followers":[[user.id, user.created] for user in self.followers.all()]
+            "following":[[user.following_user_id] for user in self.following.all()],
+            "followers":[[user.user_id] for user in self.followers.all()]
 
         }
 
@@ -31,7 +32,7 @@ class UserFollowing(models.Model):
 
     def serialize(self):
         return{
-            "user": self.user_id.id,
+            "user": self.user_id,
             "following": self.following_user_id
         }
        

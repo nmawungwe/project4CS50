@@ -174,19 +174,30 @@ document.querySelectorAll('.tweet').forEach(button=>{
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
         // Print email
-        console.log(user_prof)
+        // console.log(user_prof)
         // console.log(user_prof.id)
         const  followers = user_prof.followers.length
         const  following = user_prof.following.length
         // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
         const user_id = JSON.parse(document.getElementById('user_id').textContent);
         console.log(user_id)
-        
+        console.log(user_prof)
         if (user_id===user_prof.id) {
             document.querySelector('#poster-following-btn').innerHTML = ``
-        } else {
-            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+        } else if (find(user_prof.followers)===user_id) {
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
+        } else{
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
         }
+        
+        // console.log(user_prof.followers)
+        // if (find(user_prof.followers)===user_id) {
+            
+        // } else {
+            
+        // }
+
+        // console.log(find(user_prof.followers)===7)
 
 
         document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
@@ -216,9 +227,9 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
     // console.log("Ehe wadii??")
     let following = document.querySelector('.following')
     following_id = following.dataset.id
-    console.log(following.innerHTML)
+    // follow = following.innerHTML
 
-    if (following.innerHTML===following) {
+    if (following.innerHTML==='follow') {
         fetch(`/user_profile/${following_id}`, {
             method: 'POST'
             }).then(response => response.json()).then(result => {
