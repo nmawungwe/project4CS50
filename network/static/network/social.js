@@ -96,6 +96,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
         // Print email
         // console.log(tweets)
         // console.log(tweets[3])
+        
 
         var messages = tweets.map(label).join(' ')
         document.querySelector('#all_tweets_list').innerHTML = messages
@@ -111,6 +112,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
                 
         }
+
 
 
         document.querySelectorAll('.like').forEach(button=>{
@@ -167,19 +169,31 @@ document.querySelectorAll('.tweet').forEach(button=>{
     poster_id = this.dataset.id
     // console.log(poster_id)
 
+    
+
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
         // Print email
-        console.log(user_prof.tweets)
+        console.log(user_prof)
         // console.log(user_prof.id)
         const  followers = user_prof.followers.length
         const  following = user_prof.following.length
+        // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
+        const user_id = JSON.parse(document.getElementById('user_id').textContent);
+        console.log(user_id)
+        
+        if (user_id===user_prof.id) {
+            document.querySelector('#poster-following-btn').innerHTML = ``
+        } else {
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+        }
+
 
         document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
         document.querySelector('#poster-followers').innerHTML = `<b>Followers: </b>${followers}`
         document.querySelector('#poster-followings').innerHTML = `<b>Following: </b>${following}`
-        document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
-        document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
+        // document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+        // document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
 
 
 
@@ -220,6 +234,8 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
             // console.log(result);       
     },
     )}
+
+
     document.querySelector('.following').innerHTML = `unfollow`
 })
 

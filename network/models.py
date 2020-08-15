@@ -26,11 +26,15 @@ class UserFollowing(models.Model):
 
      
     class Meta:
-        unique_together = (('user_id', 'following_user_id'),)
+        unique_together = ('user_id', 'following_user_id')
         ordering = ["-created"]
 
-        # def __str__(self):
-        #     f"{self.user_id} follows {self.following_user_id}"
+    def serialize(self):
+        return{
+            "user": self.user_id.id,
+            "following": self.following_user_id
+        }
+       
 
         
 

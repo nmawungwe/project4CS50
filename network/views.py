@@ -165,7 +165,10 @@ def user_profile(request, user_id):
             return JsonResponse({"error": "User not found."}, status=404)
         # # Return post contents
         if request.method == "GET":
-            return JsonResponse(user_prof.serialize())
+            user_fols = UserFollowing.objects.all() 
+            # result = {user_prof, user_fols}
+            # [user_fol.serialize() for user_fol in user_fols],
+            return JsonResponse(user_prof.serialize(), safe=False)
         elif request.method == "POST":
             user_id = User.objects.get(pk=user_id)
             following = UserFollowing(user_id=request.user, following_user_id=user_id)
@@ -177,6 +180,6 @@ def user_profile(request, user_id):
             unfollow.delete()
             return JsonResponse({"message": "Unfollowing succesful"}, status=201)
         else:
-            return JsonResponse({"message": "Error"}, status=404)
+            return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
         
             
