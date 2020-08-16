@@ -174,7 +174,9 @@ def user_profile(request, user_id):
                     return value.__dict__
             # result = {user_prof, user_fols}
             # [user_fol.serialize() for user_fol in user_fols],
-            return JsonResponse(json.dumps(user_prof.serialize(), indent=4, cls=UserEncoder, ensure_ascii=False, default=json_default), safe=False)
+            user_prof=json.dumps(user_prof.serialize(), indent=4, cls=UserEncoder, ensure_ascii=False, default=json_default)
+            user_prof=json.loads(user_prof)
+            return JsonResponse(user_prof, safe=False)
         elif request.method == "POST":
             user_id = User.objects.get(pk=user_id)
             following = UserFollowing(user_id=request.user, following_user_id=user_id)
