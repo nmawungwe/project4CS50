@@ -7,8 +7,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+import datetime
 
-from .models import User, Tweet, UserFollowing, Like
+from .models import User, Tweet, UserFollowing, Like, UserEncoder
 
 
 def index(request):
@@ -166,9 +167,14 @@ def user_profile(request, user_id):
         # # Return post contents
         if request.method == "GET":
             user_fols = UserFollowing.objects.all() 
+            def json_default(value):
+                if isinstance(value, datetime.date):
+                    return dict(year=value.year, month=value.month, day=value.day)
+                else:
+                    return value.__dict__
             # result = {user_prof, user_fols}
             # [user_fol.serialize() for user_fol in user_fols],
-            return JsonResponse(user_prof.serialize(), safe=False)
+            return JsonResponse(json.dumps(user_prof.serialize(), indent=4, cls=UserEncoder, ensure_ascii=False, default=json_default), safe=False)
         elif request.method == "POST":
             user_id = User.objects.get(pk=user_id)
             following = UserFollowing(user_id=request.user, following_user_id=user_id)

@@ -176,19 +176,19 @@ document.querySelectorAll('.tweet').forEach(button=>{
         // Print email
         // console.log(user_prof)
         // console.log(user_prof.id)
-        const  followers = user_prof.followers.length
-        const  following = user_prof.following.length
+        // const  followers = user_prof.followers.length
+        // const  following = user_prof.following.length
         // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
         const user_id = JSON.parse(document.getElementById('user_id').textContent);
         console.log(user_id)
         console.log(user_prof)
-        if (user_id===user_prof.id) {
-            document.querySelector('#poster-following-btn').innerHTML = ``
-        } else if (find(user_prof.followers)===user_id) {
-            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
-        } else{
-            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
-        }
+        // if (user_id===user_prof.id) {
+        //     document.querySelector('#poster-following-btn').innerHTML = ``
+        // } else if (find(user_prof.followers)===user_id) {
+        //     document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
+        // } else{
+        //     document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
+        // }
         
         // console.log(user_prof.followers)
         // if (find(user_prof.followers)===user_id) {

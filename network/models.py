@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import json
+from json import JSONEncoder
 
 
 class User(AbstractUser):
@@ -11,8 +12,8 @@ class User(AbstractUser):
             "id": self.id,
             "username":self.username,
             "tweets": [{"id":tweets.id,"body": tweets.body, "time": tweets.timestamp} for tweets in self.tweets.all()],
-            "following":[[user.following_user_id] for user in self.following.all()],
-            "followers":[[user.user_id] for user in self.followers.all()]
+            "following":[[user.following_user_id.id] for user in self.following.all()],
+            "followers":[[user.user_id.id] for user in self.followers.all()]
 
         }
 
@@ -22,13 +23,10 @@ class UserFollowing(models.Model):
 
     following_user_id = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
 
-    # You can even add info about when user started following
-    created = models.DateTimeField(auto_now_add=True, db_index=True)
+
 
      
-    class Meta:
-        unique_together = ('user_id', 'following_user_id')
-        ordering = ["-created"]
+
 
     def serialize(self):
         return{
@@ -63,8 +61,14 @@ class Like(models.Model):
 
 
 
+# subclass JSONEncoder
+class UserEncoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__
 
-    
-
-
+        # def json_default(value):
+        #     if isinstance(value, datetime.date):
+        #         return dict(year=value.year, month=value.month, day=value.day)
+        #     else:
+        #         return value.__dict__
 
