@@ -60,7 +60,7 @@ class Like(models.Model):
         return{'id':self.id, 'tweet_id':self.tweet.id, 'likes':self.count}
 
 
-
+# https://pynative.com/make-python-class-json-serializable/
 # subclass JSONEncoder
 class UserEncoder(JSONEncoder):
         def default(self, o):

@@ -176,19 +176,32 @@ document.querySelectorAll('.tweet').forEach(button=>{
         // Print email
         // console.log(user_prof)
         // console.log(user_prof.id)
-        // const  followers = user_prof.followers.length
-        // const  following = user_prof.following.length
+        const  followers = user_prof.followers.length
+        const  following = user_prof.following.length
         // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
         const user_id = JSON.parse(document.getElementById('user_id').textContent);
-        console.log(user_id)
-        console.log(user_prof)
-        // if (user_id===user_prof.id) {
-        //     document.querySelector('#poster-following-btn').innerHTML = ``
-        // } else if (find(user_prof.followers)===user_id) {
-        //     document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
-        // } else{
-        //     document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
-        // }
+        // console.log(user_id)
+        follower_array = user_prof.followers
+
+        function following_array(follower_array){
+            let following_mat = ''
+            for (let index = 0; index < follower_array.length-1; index++) {
+                 following_mat = follower_array[index].concat(follower_array[index+1]);      
+            }
+            return following_mat
+        }
+       
+        following_list = following_array(follower_array)
+        console.log(following_list)
+        console.log(following_list.includes(user_id))
+
+        if (user_id===user_prof.id) {
+            document.querySelector('#poster-following-btn').innerHTML = ``
+        } else if (following_list.includes(user_id)) {
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
+        } else{
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
+        }
         
         // console.log(user_prof.followers)
         // if (find(user_prof.followers)===user_id) {
@@ -408,17 +421,42 @@ document.querySelectorAll('.tweet').forEach(button=>{
 
 
     poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
+ 
         // Print email
         // console.log(user_prof)
         // console.log(user_prof.id)
         const  followers = user_prof.followers.length
         const  following = user_prof.following.length
+        // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
+        const user_id = JSON.parse(document.getElementById('user_id').textContent);
+        // console.log(user_id)
+        follower_array = user_prof.followers
 
+        function following_array(follower_array){
+            let following_mat = ''
+            for (let index = 0; index < follower_array.length-1; index++) {
+                 following_mat = follower_array[index].concat(follower_array[index+1]);      
+            }
+            return following_mat
+        }
+       
+        following_list = following_array(follower_array)
+        console.log(following_list)
+        console.log(following_list.includes(user_id))
+
+        if (user_id===user_prof.id) {
+            document.querySelector('#poster-following-btn').innerHTML = ``
+        } else if (following_list.includes(user_id)) {
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
+        } else{
+            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
+        }
+        
         document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
         document.querySelector('#poster-followers').innerHTML = `<b>Followers: </b>${followers}`
         document.querySelector('#poster-followings').innerHTML = `<b>Following: </b>${following}`
-        document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
-        document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
+        // document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+        // document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
 
 
         var messages = user_prof.tweets.map(label).join(' ')
@@ -440,7 +478,7 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
     // console.log("Ehe wadii??")
     let following = document.querySelector('.following')
     following_id = following.dataset.id
-    console.log(following_id)
+    // console.log(following_id)
 
 
     fetch(`/user_profile/${following_id}`, {

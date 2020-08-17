@@ -167,13 +167,14 @@ def user_profile(request, user_id):
         # # Return post contents
         if request.method == "GET":
             user_fols = UserFollowing.objects.all() 
+            # https://pynative.com/make-python-class-json-serializable/
+            # https://code-maven.com/serialize-datetime-object-as-json-in-python
             def json_default(value):
-                if isinstance(value, datetime.date):
-                    return dict(year=value.year, month=value.month, day=value.day)
+                if isinstance(value, datetime.datetime):
+                    return value.__str__()
                 else:
                     return value.__dict__
-            # result = {user_prof, user_fols}
-            # [user_fol.serialize() for user_fol in user_fols],
+
             user_prof=json.dumps(user_prof.serialize(), indent=4, cls=UserEncoder, ensure_ascii=False, default=json_default)
             user_prof=json.loads(user_prof)
             return JsonResponse(user_prof, safe=False)
