@@ -166,7 +166,7 @@ def user_profile(request, user_id):
             return JsonResponse({"error": "User not found."}, status=404)
         # # Return post contents
         if request.method == "GET":
-            user_fols = UserFollowing.objects.all() 
+            # user_fols = UserFollowing.objects.all() 
             # https://pynative.com/make-python-class-json-serializable/
             # https://code-maven.com/serialize-datetime-object-as-json-in-python
             def json_default(value):

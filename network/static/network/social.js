@@ -181,15 +181,31 @@ document.querySelectorAll('.tweet').forEach(button=>{
         // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
         const user_id = JSON.parse(document.getElementById('user_id').textContent);
         // console.log(user_id)
+        console.log(user_prof.followers)
         follower_array = user_prof.followers
 
-        function following_array(follower_array){
-            let following_mat = ''
-            for (let index = 0; index < follower_array.length-1; index++) {
-                 following_mat = follower_array[index].concat(follower_array[index+1]);      
+
+
+
+
+        function following_array(array) {
+            let following_mat = [];
+            for (let i = 0; i < array.length-1; i++) {
+                 following_mat = array[i].concat(array[i+1])      
             }
-            return following_mat
+            return following_mat.join()
+            
         }
+
+
+
+        // function following_array(array){
+        //     let following_mat = '';
+        //     for (let index = 0; index < array.length-1; index++) {
+        //          following_mat = array[index].concat(array[index+1]);      
+        //     }
+        //     return following_mat
+        // }
        
         following_list = following_array(follower_array)
         console.log(following_list)
@@ -236,31 +252,53 @@ document.querySelectorAll('.tweet').forEach(button=>{
     }})
 
 document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
-    
-    // console.log("Ehe wadii??")
-    let following = document.querySelector('.following')
-    following_id = following.dataset.id
-    // follow = following.innerHTML
 
-    if (following.innerHTML==='follow') {
+    fol_class = document.querySelector('.following')
+    fol = fol_class.innerHTML
+    following_id = fol_class.dataset.id
+
+    if (fol === "unfollow") {
+        fetch(`/user_profile/${following_id}`, {
+            method: 'DELETE'
+            }).then(response => response.json()).then(result => {
+                // Print result
+                console.log(result);       
+        })
+    } else {
         fetch(`/user_profile/${following_id}`, {
             method: 'POST'
             }).then(response => response.json()).then(result => {
                 // Print result
-                // console.log(result);
+                console.log(result);
             }) 
-            // all_tweets()
-        }else{
-        fetch(`/user_profile/${following_id}`, {
-        method: 'DELETE'
-        }).then(response => response.json()).then(result => {
-            // Print result
-            // console.log(result);       
-    },
-    )}
+    }
 
 
-    document.querySelector('.following').innerHTML = `unfollow`
+    
+    // console.log("Ehe wadii??")
+    // let following = document.querySelector('.following')
+    // following_id = following.dataset.id
+    // // follow = following.innerHTML
+
+    // if (following.innerHTML==='follow') {
+    //     fetch(`/user_profile/${following_id}`, {
+    //         method: 'POST'
+    //         }).then(response => response.json()).then(result => {
+    //             // Print result
+    //             // console.log(result);
+    //         }) 
+    //         // all_tweets()
+    //     }else{
+    //     fetch(`/user_profile/${following_id}`, {
+    //     method: 'DELETE'
+    //     }).then(response => response.json()).then(result => {
+    //         // Print result
+    //         // console.log(result);       
+    // },
+    // )}
+
+
+    // document.querySelector('.following').innerHTML = `unfollow`
 })
 
 
@@ -275,22 +313,22 @@ document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
 //     // all_tweets()
 // })
 
-document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
+// document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
     
-    // console.log("Ehe wadii??")
-    let unfollowing = document.querySelector('.unfollowing')
-    unfollowing_id = unfollowing.dataset.id
-    console.log(unfollowing_id)
+//     // console.log("Ehe wadii??")
+//     let unfollowing = document.querySelector('.unfollowing')
+//     unfollowing_id = unfollowing.dataset.id
+//     console.log(unfollowing_id)
 
 
-    fetch(`/user_profile/${unfollowing_id}`, {
-    method: 'DELETE'
-    }).then(response => response.json()).then(result => {
-        // Print result
-        console.log(result);
-    }) 
-    // all_tweets()
-})
+//     fetch(`/user_profile/${unfollowing_id}`, {
+//     method: 'DELETE'
+//     }).then(response => response.json()).then(result => {
+//         // Print result
+//         console.log(result);
+//     }) 
+//     // all_tweets()
+// })
 }))
 })
 
@@ -473,22 +511,22 @@ document.querySelectorAll('.tweet').forEach(button=>{
     }))
     }})
 
-document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
+// document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
 
-    // console.log("Ehe wadii??")
-    let following = document.querySelector('.following')
-    following_id = following.dataset.id
-    // console.log(following_id)
+//     // console.log("Ehe wadii??")
+//     let following = document.querySelector('.following')
+//     following_id = following.dataset.id
+//     // console.log(following_id)
 
 
-    fetch(`/user_profile/${following_id}`, {
-    method: 'POST'
-    }).then(response => response.json()).then(result => {
-        // Print result
-        console.log(result);
-    }) 
-    // all_tweets()
-})
+//     fetch(`/user_profile/${following_id}`, {
+//     method: 'POST'
+//     }).then(response => response.json()).then(result => {
+//         // Print result
+//         console.log(result);
+//     }) 
+//     // all_tweets()
+// })
 
 document.querySelector('#poster-unfollowing-btn').addEventListener('click', ()=>{
     
