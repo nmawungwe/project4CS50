@@ -12,8 +12,8 @@ class User(AbstractUser):
             "id": self.id,
             "username":self.username,
             "tweets": [{"id":tweets.id,"body": tweets.body, "time": tweets.timestamp} for tweets in self.tweets.all()],
-            "following":[[user.following_user_id.id] for user in self.following.all()],
-            "followers":[[user.user_id.id] for user in self.followers.all()]
+            "following":[user.following_user_id.id for user in self.following.all()],
+            "followers":[user.user_id.id for user in self.followers.all()]
 
         }
 
