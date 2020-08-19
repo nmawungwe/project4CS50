@@ -120,7 +120,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
                 tweet_id = this.dataset.id
                 likes = this.dataset.likes
-    
+
                 likes = likes++
                 console.log(tweet_id)
                 fetch(`/tweet/${tweet_id}`, 
@@ -152,7 +152,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
                             }}))
                     })    
                     return false
-            }})
+        }})
 
 
 
@@ -162,86 +162,91 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
  
 
 
-document.querySelectorAll('.tweet').forEach(button=>{
-    button.onclick = function() {
+        document.querySelectorAll('.tweet').forEach(button=>{
+            button.onclick = function() {
+                
+            
+            poster_id = this.dataset.id
+            // console.log(poster_id)
+
+            
+
+
+            poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
+                // Print email
+                // console.log(user_prof)
+                // console.log(user_prof.id)
+                const  followers = user_prof.followers.length
+                const  following = user_prof.following.length
+                // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
+                const user_id = JSON.parse(document.getElementById('user_id').textContent);
+                console.log(user_id)
+                following_list= user_prof.followers
+
+
+                console.log(following_list.includes(user_id))
+
+                if (user_id===user_prof.id) {
+                    document.querySelector('#poster-following-btn').innerHTML = ``
+                } else if (following_list.includes(user_id)) {
+                    document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
+                } else{
+                    document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
+                }
+                
         
-    
-    poster_id = this.dataset.id
-    // console.log(poster_id)
-
-    
 
 
-    poster_profile(fetch(`/user_profile/${poster_id}`).then(response => response.json()).then(user_prof => {
-        // Print email
-        // console.log(user_prof)
-        // console.log(user_prof.id)
-        const  followers = user_prof.followers.length
-        const  following = user_prof.following.length
-        // https://stackoverflow.com/questions/34719230/django-how-to-access-current-logged-in-users-id-in-javascript/62592463#62592463
-        const user_id = JSON.parse(document.getElementById('user_id').textContent);
-        console.log(user_id)
-        console.log(user_prof.following)
-        following_list= user_prof.followers
+                document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
+                document.querySelector('#poster-followers').innerHTML = `<b>Followers: </b>${followers}`
+                document.querySelector('#poster-followings').innerHTML = `<b>Following: </b>${following}`
+                // document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
+                // document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
 
 
-        console.log(following_list.includes(user_id))
 
-        if (user_id===user_prof.id) {
-            document.querySelector('#poster-following-btn').innerHTML = ``
-        } else if (following_list.includes(user_id)) {
-            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>unfollow</button><br>`
-        } else{
-            document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>follow</button><br>` 
-        }
+                var messages = user_prof.tweets.map(label).join(' ')
+                document.querySelector('#poster_profile_tweets').innerHTML = messages
+
+                function label(tweet) {
+
+                    let time = new Date(tweet.time)
+                    // console.log(time.toDateString())
+                    let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                    // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                    return `<button class="tweet btn btn-light bd btn-block"><a><b>${user_prof.username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
+                }
+            
+                    
+                document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
+
+                    fol_class = document.querySelector('.following')
+                    fol = fol_class.innerHTML
+                    following_id = fol_class.dataset.id
+                
+                    if (fol === "unfollow") {
+                        fetch(`/user_profile/${following_id}`, {
+                            method: 'DELETE'
+                            }).then(response => response.json()).then(result => {
+                                // Print result
+                                console.log(result);       
+                        })
+                    } else {
+                        fetch(`/user_profile/${following_id}`, {
+                            method: 'POST'
+                            }).then(response => response.json()).then(result => {
+                                // Print result
+                                console.log(result);
+                            }) 
+                    }
+                })
+            }))
+            }
         
-  
 
-
-        document.querySelector('#poster-box-heading').innerHTML = `<b>User profile: </b>${user_prof.username}`
-        document.querySelector('#poster-followers').innerHTML = `<b>Followers: </b>${followers}`
-        document.querySelector('#poster-followings').innerHTML = `<b>Following: </b>${following}`
-        // document.querySelector('#poster-following-btn').innerHTML = `<button class="following btn btn-primary btn-sm" data-id=${user_prof.id}>Follow</button><br>`
-        // document.querySelector('#poster-unfollowing-btn').innerHTML = `<button class="unfollowing btn btn-primary btn-sm" data-id=${user_prof.id}>Unfollow</button>`
-
-
-
-        var messages = user_prof.tweets.map(label).join(' ')
-        document.querySelector('#poster_profile_tweets').innerHTML = messages
-
-        function label(tweet) {
-
-            let time = new Date(tweet.time)
-            // console.log(time.toDateString())
-            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-            return `<button class="tweet btn btn-light bd btn-block"><a><b>${user_prof.username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
-        }
-    }))
-    }})
-
-document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
-
-    fol_class = document.querySelector('.following')
-    fol = fol_class.innerHTML
-    following_id = fol_class.dataset.id
-
-    if (fol === "unfollow") {
-        fetch(`/user_profile/${following_id}`, {
-            method: 'DELETE'
-            }).then(response => response.json()).then(result => {
-                // Print result
-                console.log(result);       
         })
-    } else {
-        fetch(`/user_profile/${following_id}`, {
-            method: 'POST'
-            }).then(response => response.json()).then(result => {
-                // Print result
-                console.log(result);
-            }) 
-    }
-})
+
+
 
 
 
@@ -447,31 +452,33 @@ return false
                 // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
                 return `<button class="tweet btn btn-light bd btn-block"><a><b>${user_prof.username}</b></a><br>${tweet.body}<br><div>${date}<br></div></button><br>`
             }
+        
+        
+            document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
+
+                fol_class = document.querySelector('.following')
+                fol = fol_class.innerHTML
+                following_id = fol_class.dataset.id
+            
+                if (fol === "unfollow") {
+                    fetch(`/user_profile/${following_id}`, {
+                        method: 'DELETE'
+                        }).then(response => response.json()).then(result => {
+                            // Print result
+                            console.log(result);       
+                    })
+                } else {
+                    fetch(`/user_profile/${following_id}`, {
+                        method: 'POST'
+                        }).then(response => response.json()).then(result => {
+                            // Print result
+                            console.log(result);
+                        }) 
+                }
+            })   
         }))
         }})
 
-        document.querySelector('#poster-following-btn').addEventListener('click', ()=>{
-
-            fol_class = document.querySelector('.following')
-            fol = fol_class.innerHTML
-            following_id = fol_class.dataset.id
-        
-            if (fol === "unfollow") {
-                fetch(`/user_profile/${following_id}`, {
-                    method: 'DELETE'
-                    }).then(response => response.json()).then(result => {
-                        // Print result
-                        console.log(result);       
-                })
-            } else {
-                fetch(`/user_profile/${following_id}`, {
-                    method: 'POST'
-                    }).then(response => response.json()).then(result => {
-                        // Print result
-                        console.log(result);
-                    }) 
-            }
-        })
 
 
 
