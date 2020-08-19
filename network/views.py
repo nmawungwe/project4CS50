@@ -123,7 +123,7 @@ def tweet(request, tweet_id):
         return JsonResponse({"success": "Tweet update was successful"}, status=201)
     elif request.method == "POST":
         data = json.loads(request.body)
-        liking = Like(tweet=tweet, count=data)
+        liking = Like(tweet=tweet, count=data, user_id=request.user)
         liking.save()
         # Email must be via GET or PUT
         return JsonResponse({"success": "liking was successful"}, status=201)
