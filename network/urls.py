@@ -16,6 +16,6 @@ urlpatterns = [
     # path("tweets_following/<str:tweetbox>", views.tweetbox_following, name="tweetbox_following"),
     path("tweet/<int:tweet_id>", views.tweet, name="tweet"),
     path("user_profile/<int:user_id>", views.user_profile, name="user_profile"),
-
+    path("like/<int:tweet_id>", views.like, name="like")
 
 ]

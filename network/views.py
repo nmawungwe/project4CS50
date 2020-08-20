@@ -121,12 +121,6 @@ def tweet(request, tweet_id):
         tweet.body = data
         tweet.save()
         return JsonResponse({"success": "Tweet update was successful"}, status=201)
-    elif request.method == "POST":
-        data = json.loads(request.body)
-        liking = Like(tweet=tweet, count=data, user_id=request.user)
-        liking.save()
-        # Email must be via GET or PUT
-        return JsonResponse({"success": "liking was successful"}, status=201)
     else:
         return JsonResponse({"error": "GET, POST or PUT request was unsuccesful."}, status=201)
 
@@ -191,4 +185,20 @@ def user_profile(request, user_id):
         else:
             return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
         
-            
+@csrf_exempt
+@login_required
+def like(request, tweet_id):
+    if request.method == "POST":
+        tweet = Tweet.objects.get(pk=tweet_id)
+        liking = Like(tweet=tweet, user_id=request.user)
+        liking.save()
+        return JsonResponse({"message": "liking succesful"}, status=201)
+    elif request.method == "DELETE":
+        tweet = Tweet.objects.get(pk=tweet_id)
+        liking = Like.objects.get(tweet=tweet, user_id=request.user)
+        liking.delete()
+        return JsonResponse({"message": "Unliking succesful"}, status=201)
+    else:
+        return JsonResponse({"message": "POST/DELETE error"}, status=404)
+
+        

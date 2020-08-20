@@ -55,11 +55,10 @@ class Tweet(models.Model):
 
 class Like(models.Model):
     tweet = models.ForeignKey(Tweet, related_name="likes", on_delete=models.CASCADE)
-    count = models.IntegerField()
-    user_id = models.ForeignKey(User, related_name="likes", on_delete=models.CASCADE, default=1)
+    user_id = models.ForeignKey(User, related_name="likes", on_delete=models.CASCADE)
 
     def serialize(self):
-        return{'id':self.id, 'tweet_id':self.tweet.id, 'likes':self.count}
+        return{'id':self.id, 'tweet_id':self.tweet.id}
 
 
 # https://pynative.com/make-python-class-json-serializable/
