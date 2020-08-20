@@ -115,13 +115,12 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
 
 
-        document.querySelectorAll('.like').forEach(button=>{
-            button.onclick = function() {
-
+document.querySelectorAll('.like').forEach(button=>{
+    button.onclick = function() {
+                                                                                                                                       
              
             
-            likers_id = this.dataset.likers      
-            likers_id_ar = likers_id.split(",")
+  
             // console.log(likers_id_ar)
         
 
@@ -144,7 +143,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
 
           fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
-            if (tweet.user_likes_ids.includes(5)) {
+            if (tweet.user_likes_ids.includes(user)) {
                 console.log("pfeee")
                 console.log(tweet_id)
                 fetch(`/like/${tweet_id}`, 
@@ -173,7 +172,10 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
                                     return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
                                     <a href="#" type="submit" class="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">${tweet.likes}</div></form></div></button><br>`
                             }}))
-                    })    
+
+                    },
+                    all_tweets()
+                    )    
             } else {
                 console.log("wadzva dadisa")
                 console.log(tweet_id)
@@ -206,6 +208,9 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
                     })    
                     return false  
             }
+            all_tweets(
+
+            )
           })
         }})
 
@@ -409,7 +414,7 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
         let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
         // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
             return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
-            <a href="#" type="submit" class="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">${tweet.likes}</div></form></div></button><br>`
+            <a href="#" type="submit" class="like" data-id="${tweet.id}"/><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">${tweet.likes}</div></form></div></button><br>`
 
             
     }
@@ -417,42 +422,89 @@ all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets =>
 
 document.querySelectorAll('.like').forEach(button=>{
 button.onclick = function() {
-
     tweet_id = this.dataset.id
-    likes = this.dataset.likes
-
-    likes = likes++
-    console.log(tweet_id)
-    fetch(`/tweet/${tweet_id}`, 
-    {
-        method: 'POST',
-        body: likes
-        }).then(response => response.json()).then(result => {
-            // Print result
-            console.log(result);
 
 
+    const user = JSON.parse(document.getElementById('user_id').textContent);
+    
+    // function userjoin(ids) {
+    //     return `${ids}`
+    // }
 
-    all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
-        // Print email
-        // console.log(tweets)
-        // console.log(tweets[3])
+    // var ids_ar = [likers_id_ar.map(userjoin)]
+    
 
-        var messages = tweets.map(label).join(' ')
-        document.querySelector('#all_tweets_list').innerHTML = messages
+    // console.log(ids_ar)
 
-        function label(tweet) {
 
-            let time = new Date(tweet.time)
-            // console.log(time.toDateString())
-            let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-            // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-                return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
-                <a href="#" type="submit" class="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">${tweet.likes}</div></form></div></button><br>`
-        }}))
-})    
-return false
-    }})
+
+
+
+  fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
+    if (tweet.user_likes_ids.includes(user)) {
+        console.log("pfeee")
+        console.log(tweet_id)
+        fetch(`/like/${tweet_id}`, 
+        {
+            method: 'DELETE',
+            }).then(response => response.json()).then(result => {
+                // Print result
+                console.log(result);
+
+
+
+                all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+                    // Print email
+                    // console.log(tweets)
+                    // console.log(tweets[3])
+            
+                    var messages = tweets.map(label).join(' ')
+                    document.querySelector('#all_tweets_list').innerHTML = messages
+            
+                    function label(tweet) {
+            
+                        let time = new Date(tweet.time)
+                        // console.log(time.toDateString())
+                        let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                        // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                            return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
+                            <a href="#" type="submit" class="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">${tweet.likes}</div></form></div></button><br>`
+                    }}))
+            })    
+    } else {
+        console.log("wadzva dadisa")
+        console.log(tweet_id)
+        fetch(`/like/${tweet_id}`, 
+        {
+            method: 'POST'
+            }).then(response => response.json()).then(result => {
+                // Print result
+                console.log(result);
+
+
+
+                all_tweets(fetch(`/tweets/all`).then(response => response.json()).then(tweets => {
+                    // Print email
+                    // console.log(tweets)
+                    // console.log(tweets[3])
+            
+                    var messages = tweets.map(label).join(' ')
+                    document.querySelector('#all_tweets_list').innerHTML = messages
+            
+                    function label(tweet) {
+            
+                        let time = new Date(tweet.time)
+                        // console.log(time.toDateString())
+                        let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+                        // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
+                            return `<button class="tweet btn btn-light bd btn-block" data-id="${tweet.user_id}"><a><b>${tweet.user_username}</b></a><br>${tweet.body}<br><div>${date}<br><form class="like_form">
+                            <a href="#" type="submit" class="like" data-id="${tweet.id}" data-likes="${tweet.likes}"/><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">${tweet.likes}</div></form></div></button><br>`
+                    }}))
+            })    
+            return false  
+    }
+  })
+}})
 
     document.querySelectorAll('.tweet').forEach(button=>{
         button.onclick = function() {
