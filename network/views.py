@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+from django.core.paginator import Paginator
 
 from .models import User, Tweet, UserFollowing, Like, UserEncoder
 
@@ -145,6 +146,7 @@ def tweetbox(request, tweetbox):
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
     # Return emails in reverse chronologial order
     tweets = tweets.order_by("-timestamp").all()
+    tweets = Paginator(tweets, 10)
     return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
 
 
