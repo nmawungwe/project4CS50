@@ -16,10 +16,20 @@ from .models import User, Tweet, UserFollowing, Like, UserEncoder
 def index(request):
     # https://docs.djangoproject.com/en/3.0/topics/auth/default/
     if request.user.is_authenticated:
-        return render(request, "network/logged.html")
+        tweets = Tweet.objects.all()
+        tweets = tweets.order_by("-timestamp").all()
+        paginator = Paginator(tweets, 10)
+        page_number = request.GET.get('page')
+        tweets_obj = paginator.get_page(page_number)
+        return render(request, 'network/logged.html', {'tweets_obj': tweets_obj}) 
     # Everyone else is prompted to sign in
     else:
-        return render(request, "network/index.html")
+        tweets = Tweet.objects.all()
+        tweets = tweets.order_by("-timestamp").all()
+        paginator = Paginator(tweets, 10)
+        page_number = request.GET.get('page')
+        tweets_obj = paginator.get_page(page_number)
+        return render(request, 'network/index.html', {'tweets_obj': tweets_obj}) 
 
 
 def login_view(request):
@@ -146,8 +156,10 @@ def tweetbox(request, tweetbox):
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
     # Return emails in reverse chronologial order
     tweets = tweets.order_by("-timestamp").all()
-    tweets = Paginator(tweets, 10)
-    return JsonResponse([tweet.serialize() for tweet in tweets], safe=False)
+    paginator = Paginator(tweets, 10)
+    page_number = request.GET.get('page')
+    tweets_obj = paginator.get_page(page_number)
+    return render(request, 'network/logged.html', {'tweets_obj': tweets_obj})
 
 
     
