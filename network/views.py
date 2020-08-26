@@ -141,9 +141,7 @@ def tweet(request, tweet_id):
 # @login_required
 def tweetbox(request, tweetbox):
     # Filter tweets returned based on tweetbox
-    if tweetbox == "all":
-        tweets = Tweet.objects.all()    
-    elif tweetbox == "following":
+    if tweetbox == "following":
         # https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
         user = request.user
         tweets = Tweet.objects.filter(user__followers__user_id=user)
@@ -152,14 +150,16 @@ def tweetbox(request, tweetbox):
         # tweets = Tweet.objects.all() 
         # tweets = Tweet.objects.filter(user=request.user)
         # find a way of filtering the tweets that are coming from the database maybe a boolean like archived of replied like in email json
+            # Return emails in reverse chronologial order
+        tweets = tweets.order_by("-timestamp").all()
+        paginator = Paginator(tweets, 10)
+        page_number = request.GET.get('page')
+        tweets_obj = paginator.get_page(page_number)
+        return render(request, 'network/index.html', {'tweets_obj': tweets_obj}) 
     else:
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
-    # Return emails in reverse chronologial order
-    tweets = tweets.order_by("-timestamp").all()
-    paginator = Paginator(tweets, 10)
-    page_number = request.GET.get('page')
-    tweets_obj = paginator.get_page(page_number)
-    return render(request, 'network/logged.html', {'tweets_obj': tweets_obj})
+
+
 
 
     
@@ -174,18 +174,25 @@ def user_profile(request, user_id):
             return JsonResponse({"error": "User not found."}, status=404)
         # # Return post contents
         if request.method == "GET":
+            tweets = Tweet.objects.filter(user=user_id) 
+            tweets = tweets.order_by("-timestamp").all()
             # user_fols = UserFollowing.objects.all() 
             # https://pynative.com/make-python-class-json-serializable/
             # https://code-maven.com/serialize-datetime-object-as-json-in-python
-            def json_default(value):
-                if isinstance(value, datetime.datetime):
-                    return value.__str__()
-                else:
-                    return value.__dict__
+            # def json_default(value):
+            #     if isinstance(value, datetime.datetime):
+            #         return value.__str__()
+            #     else:
+            #         return value.__dict__
 
-            user_prof=json.dumps(user_prof.serialize(), indent=4, cls=UserEncoder, ensure_ascii=False, default=json_default)
-            user_prof=json.loads(user_prof)
-            return JsonResponse(user_prof, safe=False)
+            # user_prof=json.dumps(user_prof.serialize(), indent=4, cls=UserEncoder, ensure_ascii=False, default=json_default)
+            # user_prof=json.loads(user_prof)
+            paginator = Paginator(tweets, 10)
+            page_number = request.GET.get('page')
+            tweets_obj = paginator.get_page(page_number)
+            context = {'user_prof': user_prof,
+                        'tweets_obj': tweets_obj}
+            return render(request, 'network/tryed.html',  context)
         elif request.method == "POST":
             user_id = User.objects.get(pk=user_id)
             following = UserFollowing(user_id=request.user, following_user_id=user_id)

@@ -4,8 +4,8 @@
 {% block body %}
 
 <div id="all_tweets_view">
-    <div id="box-heading"></div>
-    <div id="all_tweets_list">
+<div id="box-heading"></div>
+<div id="all_tweets_list">
 {% for tweet in tweets_obj %}
 <button class="tweet btn btn-light bd btn-block"><a><b>{{tweet.user.username}}</b></a><br>{{tweet.body}}<br>{{tweet.timestamp}}</button><br>
 {% endfor %}      
@@ -33,7 +33,7 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'network/index.js' %}"></script>
+    <!-- <script src="{% static 'network/index.js' %}"></script> -->
 {% endblock %}
 
 
