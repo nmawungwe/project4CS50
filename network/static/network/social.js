@@ -12,12 +12,13 @@ document.querySelector('form').onsubmit = function() {
         })
         }).then(response => response.json()).then(result => {
             // Print result
-            console.log(result);
-            all_tweets()
+            console.log(result)
+            all_tweets(location.reload())
         })
         return false;
-}
-})
+}})
+
+
 
 function all_tweets() {
     // Show compose view and hide other views
