@@ -157,7 +157,7 @@ def followingbox(request):
         paginator = Paginator(tweets, 10)
         page_number = request.GET.get('page')
         tweets_obj = paginator.get_page(page_number)
-        return render(request, 'network/following.html', {'tweets_obj': tweets_obj}) 
+        return render(request, 'network/followed_view.html', {'tweets_obj': tweets_obj}) 
     else:
         return JsonResponse({"error": "Invalid tweetbox."}, status=400)
 
@@ -194,7 +194,7 @@ def user_profile(request, user_id):
         tweets_obj = paginator.get_page(page_number)
         context = {'user_prof': user_prof,
                     'tweets_obj': tweets_obj}
-        return render(request, 'network/tryed.html',  context)
+        return render(request, 'network/user_prof.html',  context)
     elif request.method == "POST":
         user_id = User.objects.get(pk=user_id)
         following = UserFollowing(user_id=request.user, following_user_id=user_id)
@@ -207,6 +207,25 @@ def user_profile(request, user_id):
         return JsonResponse({"message": "Unfollowing succesful"}, status=201)
     else:
         return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
+
+
+@csrf_exempt
+@login_required
+def poster_profile(request, poster_id):
+    try:
+        user_prof = User.objects.get(pk=poster_id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found."}, status=404)
+    # # Return post contents
+    if request.method == "GET":
+        tweets = Tweet.objects.filter(user=poster_id) 
+        tweets = tweets.order_by("-timestamp").all()
+        paginator = Paginator(tweets, 10)
+        page_number = request.GET.get('page')
+        tweets_obj = paginator.get_page(page_number)
+        context = {'user_prof': user_prof,
+                    'tweets_obj': tweets_obj}
+        return render(request, 'network/poster_prof.html',  context)
 
 @csrf_exempt
 @login_required

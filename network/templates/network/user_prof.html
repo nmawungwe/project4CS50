@@ -21,9 +21,7 @@
                     <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
                     <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.previous_page_number }}">previous</a></li>
                     {% endif %}
-        
                     <li class="page-item"><a class="page-link"><span class="current">Page {{ tweets_obj.number }}</span></a></li>
-        
                     {% if tweets_obj.has_next %}
                     <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.next_page_number }}">next</a></li>
                     <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.paginator.num_pages }}">last &raquo;</a></li>
@@ -31,9 +29,6 @@
                     </ul>
             </span>
         </div>
-        <div id="poster_id">{{ user_prof.id|json_script:"poster_id" }}</div>
-        <div id="user_id'">{{ request.user.id|json_script:"user_id" }}</div>
-
 </div>
 
 

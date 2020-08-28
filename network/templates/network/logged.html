@@ -18,7 +18,7 @@
 <div id="box-heading"></div>
 <div id="all_tweets_list">
 {% for tweet in tweets_obj %}
-<button class="tweet btn btn-light bd btn-block"><a href="{% url 'user_profile' tweet.user.id %}"><b>{{tweet.user.username}}</b></a><br>{{tweet.body}}<br>{{tweet.timestamp}}<br><form class="like_form"><a href="#" type="submit" class="like" data-id={{tweet.id}}><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">{{tweet.likes.count}}</div></form></button><br>
+<button class="tweet btn btn-light bd btn-block"><a href="{% url 'poster_profile' tweet.user.id %}"><b>{{tweet.user.username}}</b></a><br>{{tweet.body}}<br>{{tweet.timestamp}}<br><form class="like_form"><a href="#" type="submit" class="like" data-id={{tweet.id}}><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">{{tweet.likes.count}}</div></form></button><br>
 {% endfor %}
 </div>
 <div class="pagination_view">
@@ -50,6 +50,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{% static 'network/social.js' %}"></script>
+    <script src="{% static 'network/logged.js' %}"></script>
 
 {% endblock %}
