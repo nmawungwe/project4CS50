@@ -42,19 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('.following').innerHTML='unfollow'
             }) 
     }
-
-
-
-
-
-
-
-
-
     })
-
-
-
-
     })
 
