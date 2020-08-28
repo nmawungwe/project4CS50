@@ -4,31 +4,30 @@
 {% block body %}
 
 <div id="all_tweets_view">
-<div id="box-heading"></div>
-<div id="all_tweets_list">
-{% for tweet in tweets_obj %}
-<button class="tweet btn btn-light bd btn-block"><a><b>{{tweet.user.username}}</b></a><br>{{tweet.body}}<br>{{tweet.timestamp}}</button><br>
-{% endfor %}      
-
-<div class="pagination">
-    <span class="step-links">
-        <ul class="pagination">
-            {% if tweets_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.previous_page_number }}">previous</a></li>
-        {% endif %}
-
-        <li class="page-item"><a class="page-link"><span class="current">Page {{ tweets_obj.number }}</span></a></li>
-
-        {% if tweets_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.next_page_number }}">next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.paginator.num_pages }}">last &raquo;</a></li>
-        {% endif %}
-        </ul>
-    </span>
-</div>
+    <div id="box-heading"></div>
+    <div id="all_tweets_list">
+    {% for tweet in tweets_obj %}
+    <button class="tweet btn btn-light bd btn-block"><b>{{tweet.user.username}}</b><br>{{tweet.body}}<br>{{tweet.timestamp}}<br>Likes: {{tweet.likes.count}}</button><br>
+    {% endfor %}
     </div>
-</div>
+    <div class="pagination_view">
+        <span class="step-links">
+            <ul class="pagination">
+                {% if tweets_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.previous_page_number }}">previous</a></li>
+            {% endif %}
+    
+            <li class="page-item"><a class="page-link"><span class="current">Page {{ tweets_obj.number }}</span></a></li>
+    
+            {% if tweets_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.next_page_number }}">next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ tweets_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% endif %}
+            </ul>
+        </span>
+    </div>
+    </div>
 
 {% endblock %}
 
