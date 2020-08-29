@@ -5,13 +5,18 @@
 
 
 <div id="poster_profile_view">
-    <div id="poster-box-heading">Username: {{user_prof.username.capitalize}}</div>  
+    <div id="poster-box-heading">Username: {{user_prof.username.capitalize}}</div> 
+    <form>
+    {% csrf_token %}
     <div id="poster-following-btn"></div>
+    </form> 
     <div id="poster-followings">Following: {{user_prof.following.count}}</div>
     <div id="poster-followers">Followers: {{user_prof.followers.count}}</div>
     <div id="poster_profile_tweets">
         {% for tweet in tweets_obj %}
-        <button class="tweet btn btn-light bd btn-block" data-id={{tweet.user.id}}><div class ="tweet_body">{{tweet.body}}</div>{{tweet.timestamp}}<br><form class="like_form"><a href="#" type="submit" class="like" data-id={{tweet.id}}><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">{{tweet.likes.count}}</div></form></button><br>
+        <button class="tweet btn btn-light bd btn-block" data-id={{tweet.user.id}}><div class ="tweet_body">{{tweet.body}}</div>{{tweet.timestamp}}<br><form class="like_form method="post">        
+        {% csrf_token %}
+        <a href="#" type="submit" class="like" data-id={{tweet.id}}><span class="glyphicon glyphicon-heart"></span></a><div class="like_count">{{tweet.likes.count}}</div></form></button><br>
         {% endfor %}
     </div>
         <div class="pagination_view">

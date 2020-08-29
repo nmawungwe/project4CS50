@@ -84,7 +84,7 @@ def register(request):
         return render(request, "network/register.html")
 
 
-@csrf_exempt
+
 @login_required
 def compose(request):
 
@@ -113,7 +113,7 @@ def compose(request):
 
 
 
-@csrf_exempt
+
 @login_required
 def tweet(request, tweet_id):
     
@@ -167,7 +167,7 @@ def followingbox(request):
     
 
 
-@csrf_exempt
+
 @login_required
 def user_profile(request, user_id):
     try:
@@ -209,7 +209,7 @@ def user_profile(request, user_id):
         return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
 
 
-@csrf_exempt
+
 @login_required
 def poster_profile(request, poster_id):
     try:
@@ -227,7 +227,7 @@ def poster_profile(request, poster_id):
                     'tweets_obj': tweets_obj}
         return render(request, 'network/poster_prof.html',  context)
 
-@csrf_exempt
+
 @login_required
 def following(request, user_id):
     if request.method == "GET":
@@ -254,7 +254,7 @@ def following(request, user_id):
         return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
 
         
-@csrf_exempt
+
 @login_required
 def like(request, tweet_id):
     if request.method == "POST":

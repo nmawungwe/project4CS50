@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const user_id = JSON.parse(document.getElementById('user_id').textContent);
     const poster_id = JSON.parse(document.getElementById('poster_id').textContent);
 
+
     fetch(`/following/${poster_id}`).then(response => response.json()).then(user_prof => {
         // console.log(user_prof)
 
@@ -22,19 +23,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fol_class = document.querySelector('.following')
     fol = fol_class.innerHTML
-
-
+    let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log(csrftoken)
 
     if (fol === "unfollow") {
-        fetch(`/following/${poster_id}`, {
-            method: 'DELETE'
-            }).then(response => response.json()).then(result => {
-                // Print result
-                document.querySelector('.following').innerHTML='follow'
-                console.log(result);       
+    let request = new Request(
+        `/following/${poster_id}`, 
+            {headers: {'X-CSRFToken': csrftoken}})
+    fetch(request, {
+        method: 'DELETE'
+        }).then(response => response.json()).then(result => {
+            // Print result
+            document.querySelector('.following').innerHTML='follow'
+            console.log(result);       
         })
     } else {
-        fetch(`/following/${poster_id}`, {
+        let request = new Request(
+            `/following/${poster_id}`, 
+                {headers: {'X-CSRFToken': csrftoken}})
+        fetch(request, {
             method: 'POST'
             }).then(response => response.json()).then(result => {
                 // Print result
