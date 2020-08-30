@@ -17,7 +17,7 @@ document.querySelector('form').onsubmit = function() {
           // Do not send CSRF token to another domain.
     }).then(response => response.json()).then(result => {
                     // Print result
-                    console.log(result)
+                    // console.log(result)
                     all_tweets(location.reload())
                 })
                 return false;
@@ -40,7 +40,7 @@ document.querySelectorAll('.like').forEach(button=>{
                     method: 'DELETE',
                     }).then(response => response.json()).then(result => {
                         // Print result
-                        console.log(result);
+                        // console.log(result);
                         all_tweets(location.reload())
                     })
             } else {
@@ -52,7 +52,7 @@ document.querySelectorAll('.like').forEach(button=>{
                         method: 'POST'
                         }).then(response => response.json()).then(result => {
                             // Print result
-                            console.log(result)
+                            // console.log(result)
                             all_tweets(location.reload())
                         })
                         return false;  

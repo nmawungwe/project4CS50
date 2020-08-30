@@ -10,7 +10,8 @@
     <button class="tweet btn btn-light bd btn-block"><b>{{tweet.user.username}}</b><br>{{tweet.body}}<br>{{tweet.timestamp}}<br>Likes: {{tweet.likes.count}}</button><br>
     {% endfor %}
     </div>
-    <div class="pagination_view">
+
+    <div class="pagination_view paging-tab">
         <span class="step-links">
             <ul class="pagination">
                 {% if tweets_obj.has_previous %}
@@ -32,7 +33,7 @@
 {% endblock %}
 
 {% block script %}
-    <!-- <script src="{% static 'network/index.js' %}"></script> -->
+
 {% endblock %}
 
 

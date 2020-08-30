@@ -5,13 +5,6 @@ document.querySelectorAll('.edit').forEach(button=>{
 
         tweet_id = this.dataset.tweet
 
-
-
-        let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-
-
-
         fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
             console.log(tweet)
 
@@ -20,6 +13,7 @@ document.querySelectorAll('.edit').forEach(button=>{
         document.querySelector('.edit').innerHTML =''
         document.querySelector('.edit').innerHTML =''
         document.querySelector('.tweet_body').innerHTML =''
+        document.querySelector('.like_count').innerHTML =''
         document.querySelector('.edit_btn').addEventListener('click', ()=>{
 
         edited_tweet = document.querySelector('#tweet_edit').value;
@@ -27,6 +21,7 @@ document.querySelectorAll('.edit').forEach(button=>{
         edit_info = document.querySelector('.edit_btn')
         tweet_id=edit_info.dataset.tweet  
         user_id=edit_info.dataset.user
+
         let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
         let request = new Request(

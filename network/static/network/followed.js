@@ -4,28 +4,29 @@ document.querySelectorAll('.like').forEach(button=>{
     button.onclick = function() {
         tweet_id = this.dataset.id
         const user_id = JSON.parse(document.getElementById('user_id').textContent);
-        // console.log(tweet_id)
-
+        let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
-            // console.log(tweet)
             if (tweet.user_likes_ids.includes(user_id)) {
-
-                fetch(`/like/${tweet_id}`, 
-                {
+                let request = new Request(
+                    `/like/${tweet_id}`, 
+                    {headers: {'X-CSRFToken': csrftoken}})
+                    fetch(request, {
                     method: 'DELETE',
                     }).then(response => response.json()).then(result => {
                         // Print result
-                        console.log(result);
+                        // console.log(result);
                         all_tweets(location.reload())
-
                     })
             } else {
-                fetch(`/like/${tweet_id}`, 
-                    {
+                let request = new Request(
+                `/like/${tweet_id}`, 
+                {headers: {'X-CSRFToken': csrftoken}}
+                )
+                fetch(request, {
                         method: 'POST'
                         }).then(response => response.json()).then(result => {
                             // Print result
-                            console.log(result)
+                            // console.log(result)
                             all_tweets(location.reload())
                         })
                         return false;  
@@ -33,7 +34,6 @@ document.querySelectorAll('.like').forEach(button=>{
         })
     }})
 })
-
 
 function all_tweets() {
     // Show compose view and hide other views
