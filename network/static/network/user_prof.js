@@ -5,15 +5,21 @@ document.querySelectorAll('.edit').forEach(button=>{
 
         tweet_id = this.dataset.tweet
 
+
+
+        let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+
+
+
         fetch(`/tweet/${tweet_id}`).then(response => response.json()).then(tweet => {
             console.log(tweet)
 
-        document.querySelector('.tweet_body').innerHTML = `<form id="edit-form">
-        <textarea class="form-control" id="tweet_edit">${tweet.body}</textarea>
-        <input type="submit" class="btn btn-primary edit_btn" data-tweet=${tweet.id} data-user=${tweet.user_id} value="Post"/>
-        </form>`
+        document.querySelector('.edit-form').innerHTML = `<textarea class="form-control" id="tweet_edit">${tweet.body}</textarea>
+        <input type="submit" class="btn btn-primary edit_btn" data-tweet=${tweet.id} data-user=${tweet.user_id} value="Post"/>`
         document.querySelector('.edit').innerHTML =''
         document.querySelector('.edit').innerHTML =''
+        document.querySelector('.tweet_body').innerHTML =''
         document.querySelector('.edit_btn').addEventListener('click', ()=>{
 
         edited_tweet = document.querySelector('#tweet_edit').value;
@@ -21,14 +27,19 @@ document.querySelectorAll('.edit').forEach(button=>{
         edit_info = document.querySelector('.edit_btn')
         tweet_id=edit_info.dataset.tweet  
         user_id=edit_info.dataset.user
+        let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
-        fetch(`/tweet/${tweet_id}`, {
+        let request = new Request(
+        `/tweet/${tweet_id}`, 
+        {headers: {'X-CSRFToken': csrftoken}})
+        fetch(request, {
             method: 'PUT',
             body: JSON.stringify(edited_tweet)
-            }).then(response => response.json()).then(response => {
+            }).then(response => response.json()).then(result => {
+                // Print result
                 console.log(response)
                 location.reload()    
-            })        
+         })        
         })
         })
     }})
