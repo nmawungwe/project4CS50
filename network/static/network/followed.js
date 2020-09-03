@@ -52,14 +52,15 @@ function like_handeler(element) {
       is_liked = element.getAttribute("data-is_liked");
       icon = document.querySelector(`#tweet-like-${id}`);
       count = document.querySelector(`#tweet-count-${id}`);
+      let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   
       form = new FormData();
       form.append("is_liked", is_liked);
-      fetch(`/like/${id}`, {
+      let request = new Request(`/like/${id}`,
+        {headers: {'X-CSRFToken': csrftoken}});fetch(request,{
         method: "POST",
         body: form,
-      })
-        .then((res) => res.json())
+      }).then((res) => res.json())
         .then((res) => {
           if (res.status == 201) {
             if (res.is_liked === "yes") {

@@ -21,23 +21,25 @@
 <div id="all_tweets_list">
 {% for tweet in tweets_obj %}
 <button class="tweet btn btn-light bd btn-block"><a href="{% url 'poster_profile' tweet.user.id %}"><b>{{tweet.user.username}}</b></a><br>{{tweet.body}}<br>{{tweet.timestamp}}<br>
-    <div class="like mt-3">
-        <img style="width: 25px;
-        cursor: pointer;"
-        data-id="{{tweet.id}}"
-        id="tweet-like-{{tweet.id}}"
-          class="liked"
-          {% if not request.user in tweet.like.all %}
-          data-is_liked="no"
-          src="https://img.icons8.com/carbon-copy/100/000000/like--v2.png"
-    {%else%}
-    data-is_liked="yes"
-          src="https://img.icons8.com/plasticine/100/000000/like.png"
-          {%endif%}
-        />
-        
-        <span id="tweet-count-{{tweet.id}}">{{tweet.like.count}}</span>
-      </div></button>
+        <div class="like mt-3">
+            {% csrf_token %}
+            <img style="width: 25px;
+            cursor: pointer;"
+            data-id="{{tweet.id}}"
+            id="tweet-like-{{tweet.id}}"
+              class="liked"
+              {% if not request.user in tweet.like.all %}
+              data-is_liked="no"
+              src="https://img.icons8.com/carbon-copy/100/000000/like--v2.png"
+        {%else%}
+        data-is_liked="yes"
+              src="https://img.icons8.com/plasticine/100/000000/like.png"
+              {%endif%}
+            />
+            <span id="tweet-count-{{tweet.id}}">{{tweet.like.count}}</span>
+          </div>
+ 
+ </button>
     <br>
 {% endfor %}
 </div>

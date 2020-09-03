@@ -11,7 +11,25 @@
     <div id="poster-followers">Followers: {{user_prof.followers.count}}</div>
     <div id="poster_profile_tweets">
         {% for tweet in tweets_obj %}
-        <button class="tweet btn btn-light bd btn-block" data-id={{tweet.user.id}}><a href="#" class="edit" data-tweet={{tweet.id}}>Edit</a><br><form >{% csrf_token %}<div class="edit-form"></div></form><div class="tweet_body">{{tweet.body}}</div>{{tweet.timestamp}}<div class="like_count">Likes: {{tweet.likes.count}}</div></button><br>
+        <button class="tweet btn btn-light bd btn-block" data-id={{tweet.user.id}}><a href="#" class="edit" data-tweet={{tweet.id}}>Edit</a><br><form >{% csrf_token %}<div class="edit-form"></div></form><div class="tweet_body">{{tweet.body}}</div>{{tweet.timestamp}}<br>
+            <div class="like mt-3">
+                {% csrf_token %}
+                <img style="width: 25px;
+                cursor: pointer;"
+                data-id="{{tweet.id}}"
+                id="tweet-like-{{tweet.id}}"
+                  class="liked"
+                  {% if not request.user in tweet.like.all %}
+                  data-is_liked="no"
+                  src="https://img.icons8.com/carbon-copy/100/000000/like--v2.png"
+            {%else%}
+            data-is_liked="yes"
+                  src="https://img.icons8.com/plasticine/100/000000/like.png"
+                  {%endif%}
+                />
+                <span id="tweet-count-{{tweet.id}}">{{tweet.like.count}}</span>
+              </div>
+        </button><br>
         {% endfor %}
     </div>
         <div class="pagination_view">

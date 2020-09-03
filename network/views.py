@@ -254,7 +254,7 @@ def following(request, user_id):
         return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
 
         
-@csrf_exempt
+
 @login_required
 def like(request, tweet_id):
     if request.method == "POST":

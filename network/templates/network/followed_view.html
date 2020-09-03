@@ -9,6 +9,7 @@
     {% for tweet in tweets_obj %}
     <button class="tweet btn btn-light bd btn-block"><a href="{% url 'poster_profile' tweet.user.id %}"><b>{{tweet.user.username}}</b></a><br>{{tweet.body}}<br>{{tweet.timestamp}}<br>
         <div class="like mt-3">
+            {% csrf_token %}
             <img style="width: 25px;
             cursor: pointer;"
             data-id="{{tweet.id}}"
