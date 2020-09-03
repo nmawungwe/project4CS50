@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 from django.core.paginator import Paginator
 
-from .models import User, Tweet, UserFollowing, Like, UserEncoder
+from .models import User, Tweet, UserFollowing, UserEncoder
 
 
 def index(request):
@@ -254,20 +254,21 @@ def following(request, user_id):
         return JsonResponse({"message": "GET/POST/DELETE error"}, status=404)
 
         
-
+@csrf_exempt
 @login_required
 def like(request, tweet_id):
     if request.method == "POST":
-        tweet = Tweet.objects.get(pk=tweet_id)
-        liking = Like(tweet=tweet, user_id=request.user)
-        liking.save()
-        return JsonResponse({"message": "liking succesful"}, status=201)
-    elif request.method == "DELETE":
-        tweet = Tweet.objects.get(pk=tweet_id)
-        liking = Like.objects.get(tweet=tweet, user_id=request.user)
-        liking.delete()
-        return JsonResponse({"message": "Unliking succesful"}, status=201)
-    else:
-        return JsonResponse({"message": "POST/DELETE error"}, status=404)
-
-        
+        is_liked = request.POST.get('is_liked')
+        try:
+            tweet = Tweet.objects.get(pk=tweet_id)
+            if is_liked == 'no':
+                tweet.like.add(request.user)
+                is_liked = 'yes'
+            elif is_liked == 'yes':
+                tweet.like.remove(request.user)
+                is_liked = 'no'
+            tweet.save()
+            return JsonResponse({'like_count': tweet.like.count(), 'is_liked': is_liked, "status": 201})
+        except:
+            return JsonResponse({'error': "Post not found", "status": 404})
+    return JsonResponse({}, status=400)     
