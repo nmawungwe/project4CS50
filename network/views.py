@@ -122,7 +122,6 @@ def tweet(request, tweet_id):
         tweet = Tweet.objects.get(pk=tweet_id)
     except Tweet.DoesNotExist:
         return JsonResponse({"error": "Tweet not found."}, status=404)
-
     # Return post contents
     if request.method == "GET":
         return JsonResponse(tweet.serialize(), safe=False)

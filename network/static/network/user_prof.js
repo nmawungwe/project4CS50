@@ -11,9 +11,7 @@ document.querySelectorAll('.edit').forEach(button=>{
         document.querySelector('.edit-form').innerHTML = `<textarea class="form-control" id="tweet_edit">${tweet.body}</textarea>
         <input type="submit" class="btn btn-primary edit_btn" data-tweet=${tweet.id} data-user=${tweet.user_id} value="Post"/>`
         document.querySelector('.edit').innerHTML =''
-        document.querySelector('.edit').innerHTML =''
         document.querySelector('.tweet_body').innerHTML =''
-        document.querySelector('.like_count').innerHTML =''
         document.querySelector('.edit_btn').addEventListener('click', ()=>{
 
         edited_tweet = document.querySelector('#tweet_edit').value;
